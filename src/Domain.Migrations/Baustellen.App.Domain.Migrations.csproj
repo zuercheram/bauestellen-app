@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-Baustellen.App.Domain.Migrations-f906eff2-7d77-44c1-8ffe-13a9caa08601</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0-rc.2.24473.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ServiceDefaults\Baustellen.App.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\Domain\Baustellen.App.Domain.csproj" />
+  </ItemGroup>
+</Project>
