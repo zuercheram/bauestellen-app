@@ -1,10 +1,18 @@
+using Baustellen.App.Domain;
+using Baustellen.App.Shared.Constants;
+using Baustellen.App.Service.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddServices();
 builder.Services.AddOpenApi();
+
+// Add database
+builder.AddNpgsqlDbContext<BaustellenAppDbContext>(AppConstants.PostgresDatabaseName);
 
 var app = builder.Build();
 

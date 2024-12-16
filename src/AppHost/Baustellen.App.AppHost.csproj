@@ -11,11 +11,16 @@
 
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.AppHost" Version="8.2.2" />
+    <PackageReference Include="Aspire.Hosting.Azure.PostgreSQL" Version="8.2.2" />
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="8.2.2" />
+    <PackageReference Include="AspireMobile.Hosting" Version="0.7.130-beta" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Api\Baustellen.App.Api.csproj" />
+    <ProjectReference Include="..\ClientStub\Baustellen.App.ClientStub.csproj" />
     <ProjectReference Include="..\Domain.Migrations\Baustellen.App.Domain.Migrations.csproj" />
+    <ProjectReference Include="..\Shared\Baustellen.App.Shared.csproj" IsAspireProjectResource="false" />
   </ItemGroup>
 
 </Project>

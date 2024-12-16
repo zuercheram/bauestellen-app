@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0-rc.2.24474.3" />
   </ItemGroup>
 
@@ -14,6 +15,7 @@
     <ProjectReference Include="..\Shared\Baustellen.App.Shared.csproj" />
     <ProjectReference Include="..\Domain\Baustellen.App.Domain.csproj" />
     <ProjectReference Include="..\ServiceDefaults\Baustellen.App.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\Service\Baustellen.App.Services.csproj" />
   </ItemGroup>
 
 </Project>
