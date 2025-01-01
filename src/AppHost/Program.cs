@@ -18,4 +18,10 @@ var apiService = builder.AddProject<Baustellen_App_Api>(AppConstants.AppApiProje
 builder.AddMobileProject(AppConstants.MobileAppProject, "../Client", clientStubProjectPath: "../ClientStub/Baustellen.App.ClientStub.csproj")
     .WithReference(apiService);
 
+builder.AddNpmApp(AppConstants.WebClientProject, "../WebClient")
+    .WaitFor(apiService)
+    .WithHttpsEndpoint(env: "PORT")
+    .WithExternalHttpEndpoints()
+    .PublishAsDockerFile();
+
 builder.Build().Run();

@@ -1,0 +1,39 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+
+  .app-toolbar-spacer {
+    flex: 1 1 auto;
+  }
+
+  .app-content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+
+    nav {
+      ul {
+        padding-inline-start: 1rem;
+        li {
+          list-style-type: none;
+        }
+      }
+    }
+
+    mat-drawer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+
+      .app-content-inner-canvas {
+        padding: 0 0.8rem;
+      }
+    }
+  }
+}

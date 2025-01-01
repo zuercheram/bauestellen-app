@@ -8,4 +8,5 @@ public static class AppConstants
     public const string AppMigrationsProject = "BaustellenAppMigrations";
     public const string AppApiProject = "BaustellenAppBackendApi";
     public const string MobileAppProject = "BaustellenAppMobileClient";
+    public const string WebClientProject = "BaustellenAppWebClient";
 }
