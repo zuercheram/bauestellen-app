@@ -1,9 +1,4 @@
 ﻿using Baustellen.App.Client.Services.Navigation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Baustellen.App.Client.ViewModels.Base;
 

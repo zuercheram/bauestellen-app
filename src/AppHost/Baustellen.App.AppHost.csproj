@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Sdk Name="Aspire.AppHost.Sdk" Version="9.0.0" />
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -11,7 +11,10 @@
 
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.AppHost" Version="9.0.0" />
+    <PackageReference Include="Aspire.Hosting.Azure" Version="9.0.0" />
     <PackageReference Include="Aspire.Hosting.Azure.PostgreSQL" Version="9.0.0" />
+    <PackageReference Include="Aspire.Hosting.Azure.Storage" Version="9.0.0" />
+    <PackageReference Include="Aspire.Hosting.Keycloak" Version="9.0.0-preview.5.24551.3" />
     <PackageReference Include="Aspire.Hosting.NodeJs" Version="9.0.0" />
     <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="9.0.0" />
     <PackageReference Include="AspireMobile.Hosting" Version="0.7.130-beta" />
@@ -19,10 +22,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Api\Baustellen.App.Api.csproj" />
+    <ProjectReference Include="..\Projects.Api\Baustellen.App.Projects.Api.csproj" />
     <ProjectReference Include="..\ClientStub\Baustellen.App.ClientStub.csproj" />
-    <ProjectReference Include="..\Domain.Migrations\Baustellen.App.Domain.Migrations.csproj" />
+    <ProjectReference Include="..\Notes.Api\Baustellen.App.Notes.Api.csproj" />
+    <ProjectReference Include="..\Identity.Api\Baustellen.App.Identity.Api.csproj" />
     <ProjectReference Include="..\Shared\Baustellen.App.Shared.csproj" IsAspireProjectResource="false" />
+	<ProjectReference Include="..\Gateway\Baustellen.App.Gateway.csproj" />
+	<ProjectReference Include="..\Blob.Api\Baustellen.App.Blob.Api.csproj" />
   </ItemGroup>
 
   <Target Name="RestoreNpm" BeforeTargets="Build" Condition=" '$(DesignTimeBuild)' != 'true' ">

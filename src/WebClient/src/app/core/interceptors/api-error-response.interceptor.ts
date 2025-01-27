@@ -19,15 +19,6 @@ export function apiErrorIntercpetor(
   return next(req).pipe(
     tap((event) => {
       if (event.type === HttpEventType.Response) {
-        const _snackBar = inject(MatSnackBar);
-
-        if (event.status !== 200) {
-          _snackBar.open('An error occurred', 'Close', {
-            horizontalPosition: 'end' as MatSnackBarHorizontalPosition,
-            verticalPosition: 'top' as MatSnackBarVerticalPosition,
-            duration: 7000,
-          });
-        }
         console.log(req.url, 'returned a response with status', event.status);
       }
     })

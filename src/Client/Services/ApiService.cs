@@ -7,17 +7,18 @@ public class ApiBaseService(HttpClient http)
 {
     public async Task<T> GetFromJsonAsync<T>(Uri url)
     {
-        try 
+        try
         {
             var response = await http.GetFromJsonAsync<T>(url);
             return response == null ? throw new WebApiRequestException("Response content is NULL!") : response;
         }
-        catch (OperationCanceledException ex) {
+        catch (OperationCanceledException ex)
+        {
             // TODO: Log error
-            throw new WebApiRequestException(ex);     
+            throw new WebApiRequestException(ex);
         }
     }
-    
+
     public async Task PostAsync<T>(Uri url, T content)
     {
         try
@@ -26,9 +27,9 @@ public class ApiBaseService(HttpClient http)
             if (!response.IsSuccessStatusCode)
             {
                 throw new WebApiRequestException($"POST to {url} failed with {response.StatusCode}, reason {response.ReasonPhrase}");
-            }            
+            }
         }
-        catch(OperationCanceledException ex)
+        catch (OperationCanceledException ex)
         {
             // TODO implement log.
             throw new WebApiRequestException(ex);

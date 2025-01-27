@@ -6,45 +6,43 @@ using CommunityToolkit.Maui;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Controls.Hosting;
-using Microsoft.Maui.Hosting;
 
 namespace Baustellen.App.Client;
 
 public static class MauiProgram
 {
-	public static MauiApp CreateMauiApp()
-	{
-		var builder = MauiApp.CreateBuilder();
-		builder
-			.UseMauiApp<App>()
-			.UseMauiCommunityToolkit()
-			.ConfigureFonts(fonts =>
-				{
-					fonts.AddFont("Quicksand_Bold.otf", "QuicksandBold");
-					fonts.AddFont("Quicksand_Bold_Oblique.otf", "QuicksandBoldOblique");
-					fonts.AddFont("Quicksand_Book.otf", "QuicksandBook");
-					fonts.AddFont("Quicksand_Book_Oblique.otf", "QuicksandBookOblique");
-					fonts.AddFont("Quicksand_Light.otf", "QuicksandLight");
-					fonts.AddFont("Quicksand_Light_Oblique.otf", "QuicksandLightOblique");
-				})
+    public static MauiApp CreateMauiApp()
+    {
+        var builder = MauiApp.CreateBuilder();
+        builder
+            .UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
+            .ConfigureFonts(fonts =>
+                {
+                    fonts.AddFont("Quicksand_Bold.otf", "QuicksandBold");
+                    fonts.AddFont("Quicksand_Bold_Oblique.otf", "QuicksandBoldOblique");
+                    fonts.AddFont("Quicksand_Book.otf", "QuicksandBook");
+                    fonts.AddFont("Quicksand_Book_Oblique.otf", "QuicksandBookOblique");
+                    fonts.AddFont("Quicksand_Light.otf", "QuicksandLight");
+                    fonts.AddFont("Quicksand_Light_Oblique.otf", "QuicksandLightOblique");
+                })
 #if !WINDOWS
 #endif
-			.ConfigureHandlers()
-			.RegisterAppServices()
-			.RegisterModelViews()
-			.RegisterViews();
+            .ConfigureHandlers()
+            .RegisterAppServices()
+            .RegisterModelViews()
+            .RegisterViews();
 
 #if DEBUG
         builder.Configuration.AddInMemoryCollection(AspireAppSettings.Settings);
 #endif
-		builder.AddAppDefaults();
+        builder.AddAppDefaults();
 
-		MauiApp mauiApp = builder.Build();
-		mauiApp.InitOpenTelemetryServices();
-		return mauiApp;
-		
-	}
+        MauiApp mauiApp = builder.Build();
+        mauiApp.InitOpenTelemetryServices();
+        return mauiApp;
+
+    }
 
     public static MauiAppBuilder ConfigureHandlers(this MauiAppBuilder mauiAppBuilder)
     {
@@ -60,21 +58,21 @@ public static class MauiProgram
     }
 
     public static MauiAppBuilder RegisterAppServices(this MauiAppBuilder builder)
-	{
-		builder.Services.AddSingleton<ISettingsService, SettingsService>();
-		builder.Services.AddSingleton<IRequestProvider>(sp =>
-		{
-			var debugHandler = sp.GetKeyedService<HttpMessageHandler>("DebugHttpMessageHandler");
-			return new RequestProvider(debugHandler!);
-		});
-		builder.Services.AddSingleton<IAppEnvironmentService, AppEnvironmentService>(sp =>
-		{
-			var requestProvider = sp.GetRequiredService<IRequestProvider>();
-			var settingsService = sp.GetRequiredService<ISettingsService>();
-			var aes = new AppEnvironmentService(new ProjectService(), new MockProjectService());
-			aes.UpdateDependencies(settingsService.UseMocks);
-			return aes;
-		});
+    {
+        builder.Services.AddSingleton<ISettingsService, SettingsService>();
+        builder.Services.AddSingleton<IRequestProvider>(sp =>
+        {
+            var debugHandler = sp.GetKeyedService<HttpMessageHandler>("DebugHttpMessageHandler");
+            return new RequestProvider(debugHandler!);
+        });
+        builder.Services.AddSingleton<IAppEnvironmentService, AppEnvironmentService>(sp =>
+        {
+            var requestProvider = sp.GetRequiredService<IRequestProvider>();
+            var settingsService = sp.GetRequiredService<ISettingsService>();
+            var aes = new AppEnvironmentService(new ProjectService(), new MockProjectService());
+            aes.UpdateDependencies(settingsService.UseMocks);
+            return aes;
+        });
 
 #if DEBUG
         builder.Services.AddKeyedSingleton<HttpMessageHandler>(
@@ -108,15 +106,15 @@ public static class MauiProgram
 #endif
 
         return builder;
-	}
-	
-	public static MauiAppBuilder RegisterModelViews(this MauiAppBuilder builder) 
-	{
-		return builder;
-	}
+    }
 
-	public static MauiAppBuilder RegisterViews(this MauiAppBuilder builder)
-	{
-		return builder;
-	}
+    public static MauiAppBuilder RegisterModelViews(this MauiAppBuilder builder)
+    {
+        return builder;
+    }
+
+    public static MauiAppBuilder RegisterViews(this MauiAppBuilder builder)
+    {
+        return builder;
+    }
 }

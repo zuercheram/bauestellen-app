@@ -1,1 +1,7 @@
-<p>projects works!</p>
+<h2>Projekte</h2>
+
+<ul>
+  <li *ngFor="let item of projects$ | async">
+    <app-project-list-item [project]="item"></app-project-list-item>
+  </li>
+</ul>

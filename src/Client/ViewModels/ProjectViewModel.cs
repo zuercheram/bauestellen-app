@@ -5,12 +5,6 @@ using Baustellen.App.Client.Services.AppEnvironment;
 using Baustellen.App.Client.Services.Navigation;
 using Baustellen.App.Client.ViewModels.Base;
 using CommunityToolkit.Mvvm.Messaging;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Baustellen.App.Client.ViewModels;
 
@@ -47,7 +41,7 @@ public partial class ProjectViewModel : ViewModelBase
         {
             var products = await _appEnvironmentService.ProjectService.GetProjectsAsync();
 
-            _projects.ReloadData(products);            
+            _projects.ReloadData(products);
         });
     }
 }
