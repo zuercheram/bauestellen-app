@@ -15,6 +15,8 @@ public partial class ProjectViewModel : ViewModelBase
 
     private bool _initialized;
 
+    public int BadgeCount = 0;
+
     public ProjectViewModel(INavigationService navigationService, IAppEnvironmentService appEnvironmentService) : base(navigationService)
     {
         _appEnvironmentService = appEnvironmentService;
@@ -29,9 +31,9 @@ public partial class ProjectViewModel : ViewModelBase
                 });
     }
 
-    internal IReadOnlyList<ProjectItem> Projects = _projects;
+    //public IList<ProjectItem> Projects = _projects;
 
-    internal override async Task InitializeAsync()
+    public override async Task InitializeAsync()
     {
         if (_initialized) return;
 
@@ -39,9 +41,9 @@ public partial class ProjectViewModel : ViewModelBase
 
         await IsBusyFor(async () =>
         {
-            var products = await _appEnvironmentService.ProjectService.GetProjectsAsync();
+           // var products = await _appEnvironmentService.ProjectService.GetProjectsAsync();
 
-            _projects.ReloadData(products);
+           // _projects.ReloadData(products);
         });
     }
 }

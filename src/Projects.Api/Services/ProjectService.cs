@@ -67,7 +67,7 @@ public class ProjectService(ProjectsDbContext dbContext)
             Name = project.Name,
             Number = project.Number,
             ManagerName = project.ManagerName,
-            ManagerId = project.ManagerId,
+            ManagerId = project.ManagerId ?? Guid.Empty,
             Start = project.Start,
             Commissioning = project.Commissioning,
             ObjectCity = project.ObjectCity,

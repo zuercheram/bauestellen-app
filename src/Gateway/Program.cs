@@ -1,5 +1,7 @@
-using Baustellen.App.Gateway.Extensions;
 using Baustellen.App.ServiceDefaults;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Identity.Web;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,14 +10,13 @@ builder.AddServiceDefaults();
 builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("ReverseProxy")).AddServiceDiscoveryDestinationResolver();
 builder.Services.AddHttpForwarderWithServiceDiscovery();
 
-builder.AddApplicationSecurity();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddMicrosoftIdentityWebApi(builder.Configuration, "AzureAd");
 
 var app = builder.Build();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapDefaultEndpoints();
 app.MapReverseProxy();
 
 await app.RunAsync();

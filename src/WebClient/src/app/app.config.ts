@@ -14,6 +14,14 @@ import {
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { apiErrorIntercpetor } from './core/interceptors/api-error-response.interceptor';
 
+import {
+  MsalService,
+  MsalGuard,
+  MsalBroadcastService,
+  MSAL_INSTANCE,
+} from '@azure/msal-angular';
+import { msalInstance } from './core/config/auth-config';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
@@ -21,5 +29,9 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideHttpClient(withInterceptors([apiErrorIntercpetor]), withFetch()),
     provideAnimationsAsync(),
+    { provide: MSAL_INSTANCE, useValue: msalInstance },
+    MsalService,
+    MsalGuard,
+    MsalBroadcastService,
   ],
 };

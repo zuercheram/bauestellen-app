@@ -45,24 +45,38 @@
       <nav>
         <ul>
           <li>
-            <a
-              mat-button
-              routerLink="/login"
-              routerLinkActive="active"
-              ariaCurrentWhenActive="page"
-              (click)="drawer.close()"
-              >Login</a
+            <div
+              class="container d-flex justify-content-center align-items-center mt-5"
             >
-          </li>
-          <li>
-            <a
-              mat-button
-              routerLink="/about"
-              routerLinkActive="active"
-              ariaCurrentWhenActive="page"
-              (click)="drawer.close()"
-              >About</a
-            >
+              <div class="text-center p-4 border rounded bg-light">
+                <div *ngIf="authService.signedInAccount(); else loginBlock">
+                  <div class="mb-4 fs-5">
+                    {{
+                      "Authenticated user: " +
+                        authService.signedInAccount()?.name
+                    }}
+                  </div>
+                  <button
+                    mat-button
+                    class="btn btn-danger"
+                    (click)="authService.azureLogout()"
+                  >
+                    Logout
+                  </button>
+                </div>
+
+                <ng-template #loginBlock>
+                  <div class="mb-4 fs-5">No authenticated user</div>
+                  <button
+                    mat-button
+                    class="btn btn-warning mt-2"
+                    (click)="authService.azureLogin()"
+                  >
+                    Login
+                  </button>
+                </ng-template>
+              </div>
+            </div>
           </li>
         </ul>
       </nav>

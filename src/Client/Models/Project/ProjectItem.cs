@@ -2,6 +2,6 @@
 
 namespace Baustellen.App.Client.Models.Project;
 
-class ProjectItem : ProjectDto
+class ProjectItem
 {
 }

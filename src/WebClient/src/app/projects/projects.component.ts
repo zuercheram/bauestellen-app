@@ -11,10 +11,12 @@ import { ProjectListItemComponent } from './project-list-item/project-list-item.
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss',
 })
-export class ProjectsComponent {
-  projects$: Observable<Project[]>;
+export class ProjectsComponent implements OnInit {
+  constructor(public readonly projectsService: ProjectsService) {
+    projectsService.fetchProjects();
+  }
 
-  constructor(private readonly projectsService: ProjectsService) {
-    this.projects$ = projectsService.getProjects();
+  ngOnInit(): void {
+    this.projectsService.fetchProjects();
   }
 }

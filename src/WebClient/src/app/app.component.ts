@@ -8,6 +8,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDividerModule } from '@angular/material/divider';
 import { ProgressBarComponent } from './core/components/progress-bar/progress-bar.component';
+import { CommonModule } from '@angular/common';
+import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -23,8 +25,11 @@ import { ProgressBarComponent } from './core/components/progress-bar/progress-ba
     RouterLinkActive,
     MatDividerModule,
     ProgressBarComponent,
+    CommonModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {}
+export class AppComponent {
+  constructor(public readonly authService: AuthService) {}
+}

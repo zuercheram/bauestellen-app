@@ -1,7 +1,7 @@
 <h2>Projekte</h2>
 
 <ul>
-  <li *ngFor="let item of projects$ | async">
+  <li *ngFor="let item of projectsService.projects()">
     <app-project-list-item [project]="item"></app-project-list-item>
   </li>
 </ul>

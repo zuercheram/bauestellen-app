@@ -3,6 +3,8 @@ using Baustellen.App.Projects.Api.Extensions;
 using Baustellen.App.ServiceDefaults;
 using Baustellen.App.Shared.Constants;
 using Baustellen.App.Shared.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +15,14 @@ builder.Services.AddControllers();
 builder.Services.AddServices();
 builder.Services.AddOpenApi();
 
-builder.Services.AddAuthorizationBuilder();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddMicrosoftIdentityWebApi(builder.Configuration, "AzureAd");
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ProjectRead", policy =>
+    {
+        policy.RequireScope("Project.Read");
+    });
+});
 
 // Add database
 builder.AddNpgsqlDbContext<ProjectsDbContext>(AppConstants.PostgresProjectDatabaseName);

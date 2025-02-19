@@ -4,6 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>106d089c-9af1-49c6-adcd-20ca2033473b</UserSecretsId>
   </PropertyGroup>
 
 	<ItemGroup>		<PackageReference Include="Aspire.Keycloak.Authentication" Version="9.0.0-preview.5.24551.3" />
@@ -13,11 +14,16 @@
 		<PackageReference Include="Yarp.ReverseProxy" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Extensions.ServiceDiscovery.Yarp" Version="9.0.0" />
 		<PackageReference Include="AspNetCore.HealthChecks.Uris" />
+		<PackageReference Include="Microsoft.Identity.Web" Version="3.7.1" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\ServiceDefaults\Baustellen.App.ServiceDefaults.csproj" />
 		<ProjectReference Include="..\Shared\Baustellen.App.Shared.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Extensions\" />
 	</ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
+import { HomeComponent } from './home/home.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { authGuard } from './core/guards/auth/auth.guard';
 import { EditProjectComponent } from './projects/edit-project/edit-project.component';
@@ -7,11 +7,9 @@ import { PageNotFoundComponent } from './core/components/page-not-found/page-not
 import { AboutComponent } from './about/about.component';
 
 export const routes: Routes = [
-  { path: 'login', component: LoginComponent },
   {
     path: '',
-    redirectTo: '/projects/list',
-    pathMatch: 'full',
+    component: HomeComponent,
   },
   {
     path: 'projects',

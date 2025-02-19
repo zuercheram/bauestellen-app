@@ -61,27 +61,7 @@ public class RequestProvider(HttpMessageHandler _messageHandler) : IRequestProvi
         await HandleResponse(response).ConfigureAwait(false);
 
         return response.IsSuccessStatusCode;
-    }
-
-    public async Task<TResult?> PostAsync<TResult>(string uri, string data, string clientId, string clientSecret)
-
-    {
-        var httpClient = GetOrCreateHttpClient(string.Empty);
-
-        if (!string.IsNullOrWhiteSpace(clientId) && !string.IsNullOrWhiteSpace(clientSecret))
-        {
-            AddBasicAuthenticationHeader(httpClient, clientId, clientSecret);
-        }
-
-        using var content = new StringContent(data);
-        content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
-        using var response = await httpClient.PostAsync(uri, content).ConfigureAwait(false);
-
-        await HandleResponse(response).ConfigureAwait(false);
-        var result = await ReadFromJsonAsync<TResult>(response.Content).ConfigureAwait(false);
-
-        return result;
-    }
+    }   
 
     public async Task<TResult?> PutAsync<TResult>(string uri, TResult data, string token = "", string header = "")
     {
@@ -134,21 +114,6 @@ public class RequestProvider(HttpMessageHandler _messageHandler) : IRequestProvi
         httpClient.DefaultRequestHeaders.Add(parameter, Guid.NewGuid().ToString());
     }
 
-    private static void AddBasicAuthenticationHeader(HttpClient httpClient, string clientId, string clientSecret)
-    {
-        if (httpClient == null)
-        {
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(clientId) || string.IsNullOrWhiteSpace(clientSecret))
-        {
-            return;
-        }
-
-        httpClient.DefaultRequestHeaders.Authorization = new BasicAuthenticationHeaderValue(clientId, clientSecret);
-    }
-
     private static async Task HandleResponse(HttpResponseMessage response)
     {
         if (!response.IsSuccessStatusCode)
@@ -157,7 +122,7 @@ public class RequestProvider(HttpMessageHandler _messageHandler) : IRequestProvi
 
             if (response.StatusCode == HttpStatusCode.Forbidden || response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                throw new ServiceAuthenticationException(content);
+                //throw new ServiceAuthenticationException(content);
             }
 
             throw new HttpRequestExceptionEx(response.StatusCode, content);
@@ -167,13 +132,13 @@ public class RequestProvider(HttpMessageHandler _messageHandler) : IRequestProvi
     private static async Task<T?> ReadFromJsonAsync<T>(HttpContent content)
     {
         using var contentStream = await content.ReadAsStreamAsync().ConfigureAwait(false);
-        var data = await JsonSerializer.DeserializeAsync(contentStream, typeof(T), EShopJsonSerializerContext.Default).ConfigureAwait(false);
+        var data = await JsonSerializer.DeserializeAsync(contentStream, typeof(T), BaustellenAppSerialziationContext.Default).ConfigureAwait(false);
         return (T?)data;
     }
 
     private static JsonContent SerializeToJson<T>(T data)
     {
-        var typeInfo = EShopJsonSerializerContext.Default.GetTypeInfo(typeof(T)) ?? throw new InvalidOperationException($"Missing type info for {typeof(T)}");
+        var typeInfo = BaustellenAppSerialziationContext.Default.GetTypeInfo(typeof(T)) ?? throw new InvalidOperationException($"Missing type info for {typeof(T)}");
         return JsonContent.Create(data, typeInfo);
     }
 }

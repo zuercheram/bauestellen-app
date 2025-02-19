@@ -2,7 +2,7 @@
 
 namespace Baustellen.App.Client.Services.AppEnvironment;
 
-internal interface IAppEnvironmentService
+public interface IAppEnvironmentService
 {
     IProjectService ProjectService { get; }
     void UpdateDependencies(bool useMockServices);

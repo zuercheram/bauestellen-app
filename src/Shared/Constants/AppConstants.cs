@@ -2,19 +2,13 @@ namespace Baustellen.App.Shared.Constants;
 
 public static class AppConstants
 {
-    public const string PostgresServerName = "BaustellenAppPostgresServer";
-    public const string PostgresProjectDatabaseName = "BaustellenAppProjectPostgresDb";
-    public const string PostgresNoteDatabaseName = "BaustellenAppNodePostgresDb";
-    public const string PostgresIdentityDatabaseName = "BaustellenAppIdentityPostgresDb";
-    public const string PostgresDataVolumeName = "BaustellenAppDbDate";
-    public const string AppMigrationsProject = "BaustellenAppMigrations";
-    public const string AppApiProject = "BaustellenAppProjectBackendApi";
-    public const string AppApiNotes = "BaustellenAppNotesBackendApi";
-    public const string MobileAppProject = "BaustellenAppMobileClient";
-    public const string WebClientProject = "BaustellenAppWebClient";
-    public const string IdentityApiProject = "BaustellenAppIdentityApi";
-    public const string GatewayProject = "BaustellenAppGateway";
-    public const string AzureStorageResource = "BaustellenAppStorageResource";
-    public const string AzureStorageBlob = "BaustellenAppBlobResource";
-    public const string AppApiBlob = "BaustellenAppBackendBlobApi";
+    public const string PostgresServerName = "psql-server-grp";
+    public const string PostgresProjectDatabaseName = "psql-proj-db";
+    public const string PostgresIdentityDatabaseName = "psql-id-db";
+    public const string PostgresDataVolumeName = "psql-data-volume";
+    public const string ProjectApi = "capp-proj-serv";
+    public const string MobileApp = "mobile-client";
+    public const string WebClient = "web-client";
+    public const string IdentityApi = "capp-id-serv";
+    public const string GatewayApi = "cap-api-gateway";
 }

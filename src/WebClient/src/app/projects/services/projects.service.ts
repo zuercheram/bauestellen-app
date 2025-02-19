@@ -1,17 +1,23 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Project } from '../models/project.interface';
+import { ApiBaseService } from '../../core/services/apiBase.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProjectsService {
+export class ProjectsService extends ApiBaseService {
   private apiBase: string = 'projects-api';
 
-  constructor(private http: HttpClient) {}
+  public projects = signal<Project[]>([]);
 
-  getProjects(): Observable<Project[]> {
-    return this.http.get<Project[]>(`${this.apiBase}/api/projects`);
+  fetchProjects() {
+    const url = `${this.apiBase}/api/projects`;
+    this.get<Project[]>(url).then((res) => {
+      res.subscribe((projects) => {
+        this.projects.set(projects || []);
+      });
+    });
   }
 }

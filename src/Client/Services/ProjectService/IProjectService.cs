@@ -1,5 +1,5 @@
 ﻿namespace Baustellen.App.Client.Services.ProjectService;
 
-internal interface IProjectService
+public interface IProjectService
 {
 }
