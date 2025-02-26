@@ -2,6 +2,7 @@ namespace Baustellen.App.Shared.Constants;
 
 public static class AppConstants
 {
+    // Aspire Service Constants
     public const string PostgresServerName = "psql-server-grp";
     public const string PostgresProjectDatabaseName = "psql-proj-db";
     public const string PostgresIdentityDatabaseName = "psql-id-db";
@@ -11,4 +12,7 @@ public static class AppConstants
     public const string WebClient = "web-client";
     public const string IdentityApi = "capp-id-serv";
     public const string GatewayApi = "cap-api-gateway";
+
+    // Maui App Constants
+    public const string ClientAutoSignInRoute = "auto-sign-in";
 }

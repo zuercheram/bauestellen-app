@@ -1,4 +1,4 @@
-﻿using Baustellen.App.Shared.Models.Base;
+﻿using Baustellen.App.Shared.Models;
 
 namespace Baustellen.App.Projects.Api.Models;
 

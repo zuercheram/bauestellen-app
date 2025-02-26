@@ -15,6 +15,7 @@ public class IdentityDbSeeding : IDbSeeder<IdentityDbContext>
         var fieldworker = new User
         {
             Email = "field.user@baustellen.app",
+            PrincipalName = "field.user@zuercheram1.onmicrosoft.com",
             FirstName = "User",
             LastName = "Test",
             Role = Shared.Constants.AppRoleEnum.FieldWorker
@@ -25,6 +26,7 @@ public class IdentityDbSeeding : IDbSeeder<IdentityDbContext>
         var projectlead = new User
         {
             Email = "pl.user@baustellen.app",
+            PrincipalName = "pl.user@zuercheram1.onmicrosoft.com",
             FirstName = "PL",
             LastName = "Test",
             Role = Shared.Constants.AppRoleEnum.ProjectLead
@@ -35,6 +37,7 @@ public class IdentityDbSeeding : IDbSeeder<IdentityDbContext>
         var backoffice = new User
         {
             Email = "backoffice.user@baustellen.app",
+            PrincipalName = "backoffice.user@zuercheram1.onmicrosoft.com",
             FirstName = "Backoffice",
             LastName = "Test",
             Role = Shared.Constants.AppRoleEnum.BackOffice

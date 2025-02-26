@@ -13,13 +13,11 @@ public class ProjectsDbContext : TrackingDbContext<ProjectsDbContext>
     }
 
     public DbSet<Project> Projects { get; set; }
-    public DbSet<Customer> Customers { get; set; }
     public DbSet<ExternalLinks> ExternalLinks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Project>().IsTrackingEntity();
-        modelBuilder.Entity<Customer>().IsTrackingEntity();
 
         base.OnModelCreating(modelBuilder);
     }

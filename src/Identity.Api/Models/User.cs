@@ -7,8 +7,10 @@ namespace Baustellen.App.Identity.Api.Models;
 public class User : TrackingEntityBase
 {
     public int Id { get; set; }
-    [Required]    
+    [Required]
     public string Email { get; set; } = string.Empty;
+    [Required]
+    public string PrincipalName { get; set; } = string.Empty;
     [Required]
     public AppRoleEnum Role { get; set; }
     public string? FirstName { get; set; }

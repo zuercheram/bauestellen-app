@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks>net9.0-android;net9.0-ios</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net9.0-tizen</TargetFrameworks> -->
@@ -21,10 +21,10 @@
 		<Nullable>enable</Nullable>
 
 		<!-- Display name -->
-		<ApplicationTitle>Baustellen.App.Client</ApplicationTitle>
+		<ApplicationTitle>THEIA App</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.baustellen.app.client</ApplicationId>
+		<ApplicationId>com.isolutions.baustellen.app.client</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -33,8 +33,8 @@
 		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
 		<WindowsPackageType>None</WindowsPackageType>
 
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">16.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">29.0</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -56,34 +56,59 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AspireMaui.App" Version="0.7.130-beta" />
-		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.1" />
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Extensions.ServiceDiscovery" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
-		<PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.10.0" />
-		<PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.10.0" />
-		<PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.9.0" />
-		<PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.9.0" />
+		<None Remove="appsettings.json" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Include="appsettings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</EmbeddedResource>
+	</ItemGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="AspireMaui.App" Version="0.7.130-beta" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="11.1.0" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
+		<PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="9.2.0" />
+		<PackageReference Include="Microsoft.Extensions.ServiceDiscovery" Version="9.1.0" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.40" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.2" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.40" />
+		<PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.11.1" />
+		<PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.11.1" />
+		<PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.11.0" />
+		<PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.11.0" />
+		<PackageReference Include="Microsoft.Identity.Client" Version="4.68.0" />
+		<PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.68.0" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.6.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Resources\Styles\Colors - Copy.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\Styles - Copy.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="TestPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\ConnectivityView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\UserProfilePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Pages\" />
-	  <Folder Include="Views\" />
+	  <ProjectReference Include="..\Shared\Baustellen.App.Shared.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Shared\Baustellen.App.Shared.csproj" />
+	  <Folder Include="Converter\" />
+	  <Folder Include="DataLayer\" />
 	</ItemGroup>
 
 </Project>

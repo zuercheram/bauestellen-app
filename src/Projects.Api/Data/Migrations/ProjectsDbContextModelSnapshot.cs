@@ -17,60 +17,10 @@ namespace Baustellen.App.Projects.Api.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("Baustellen.App.Projects.Api.Models.Customer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("City")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("CreatedByOid")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .IsConcurrencyToken()
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("ModifiedByOid")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Number")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Street")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Telefon")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Zip")
-                        .HasColumnType("text");
-
-                    b.Property<string>("email")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Customers");
-                });
 
             modelBuilder.Entity("Baustellen.App.Projects.Api.Models.ExternalLinks", b =>
                 {
@@ -110,14 +60,40 @@ namespace Baustellen.App.Projects.Api.Data.Migrations
                     b.Property<int>("CreatedByOid")
                         .HasColumnType("integer");
 
+                    b.Property<string>("CustomerCity")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CustomerEmail")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CustomerFirstName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CustomerHouseNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CustomerLastName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CustomerStreet")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CustomerTelefon")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CustomerZip")
+                        .HasColumnType("text");
+
                     b.Property<string>("Lat")
                         .HasColumnType("text");
 
                     b.Property<string>("Lon")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("ManagerId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("ManagerEmail")
+                        .HasColumnType("text");
 
                     b.Property<string>("ManagerName")
                         .HasColumnType("text");
@@ -132,9 +108,6 @@ namespace Baustellen.App.Projects.Api.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<int>("Number")
-                        .HasColumnType("integer");
-
                     b.Property<string>("ObjectCity")
                         .HasColumnType("text");
 
@@ -147,27 +120,16 @@ namespace Baustellen.App.Projects.Api.Data.Migrations
                     b.Property<string>("ObjectZip")
                         .HasColumnType("text");
 
+                    b.Property<string>("RefNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("Start")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
                     b.ToTable("Projects");
-                });
-
-            modelBuilder.Entity("CustomerProject", b =>
-                {
-                    b.Property<Guid>("CustomersId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ProjectsId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("CustomersId", "ProjectsId");
-
-                    b.HasIndex("ProjectsId");
-
-                    b.ToTable("CustomerProject");
                 });
 
             modelBuilder.Entity("Baustellen.App.Projects.Api.Models.ExternalLinks", b =>
@@ -179,21 +141,6 @@ namespace Baustellen.App.Projects.Api.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("CustomerProject", b =>
-                {
-                    b.HasOne("Baustellen.App.Projects.Api.Models.Customer", null)
-                        .WithMany()
-                        .HasForeignKey("CustomersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Baustellen.App.Projects.Api.Models.Project", null)
-                        .WithMany()
-                        .HasForeignKey("ProjectsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Baustellen.App.Projects.Api.Models.Project", b =>

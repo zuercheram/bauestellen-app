@@ -17,7 +17,7 @@ namespace Baustellen.App.Identity.Api.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -52,6 +52,10 @@ namespace Baustellen.App.Identity.Api.Data.Migrations
 
                     b.Property<int>("ModifiedByOid")
                         .HasColumnType("integer");
+
+                    b.Property<string>("PrincipalName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("Role")
                         .HasColumnType("integer");

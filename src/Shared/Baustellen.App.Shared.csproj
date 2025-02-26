@@ -10,8 +10,7 @@
     <Folder Include="Helpers\" />
   </ItemGroup>
 
-  <ItemGroup>
-	  <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0" />
-  </ItemGroup>
-
+	<ItemGroup>
+		<PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.1.0" />
+	</ItemGroup>
 </Project>

@@ -26,8 +26,8 @@ var projectApi = builder.AddProject<Baustellen_App_Projects_Api>(AppConstants.Pr
     .WithReference(identityApi)
     .WithExternalHttpEndpoints();
 
-var mobileApp = builder.AddMobileProject(AppConstants.MobileApp, "../Client", clientStubProjectPath: "../ClientStub/Baustellen.App.ClientStub.csproj")
-    .WithReference(projectApi);
+var mobileApp = builder.AddMobileProject(AppConstants.MobileApp, "../Client", clientStubProjectPath: "../ClientStub/Baustellen.App.ClientStub.csproj");
+    
 
 var webclient = builder.AddNpmApp(AppConstants.WebClient, "../WebClient")
     .WithReference(projectApi)    

@@ -5,7 +5,9 @@ using Baustellen.App.ServiceDefaults;
 using Baustellen.App.Shared.Constants;
 using Baustellen.App.Shared.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,9 +19,9 @@ builder.AddServiceDefaults();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddMicrosoftIdentityWebApi(builder.Configuration, "AzureAd");
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("UsersRead", policy =>
+    options.AddPolicy("User.Read", policy =>
     {
-        policy.RequireScope("Users.Read");
+        policy.RequireScope("User.Read");
     });
 });
 // Add services to the container.
@@ -39,31 +41,26 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("api/users", async () =>
+app.MapGet("api/users/{timestamp}", async(long timestamp, [FromServices] UserService service) =>
 {
-    using var scope = app.Services.CreateScope();    
-    var service = scope.ServiceProvider.GetRequiredService<UserService>();
-    return await service.GetUsersAsync();
+    return await service.GetUsersAsync(timestamp);
 })
-.RequireAuthorization("UsersRead")
+.RequireAuthorization("User.Read")
 .WithName("GetUsers");
 
-app.MapGet("api/user/id/{id}", async (int id) =>
+app.MapGet("api/user/id/{id}", async (int id, [FromServices] UserService service) =>
 {
-    using var scope = app.Services.CreateScope();
-    var service = scope.ServiceProvider.GetRequiredService<UserService>();
     return await service.GetUserByAsync(id);
 })
-.RequireAuthorization("UsersRead")
+.RequireAuthorization("User.Read")
 .WithName("GetUserById");
 
-app.MapGet("api/user/email/{email}", async (string email) =>
+app.MapGet("api/user/auth", async (HttpContext context, [FromServices] UserService service) =>
 {
-    using var scope = app.Services.CreateScope();
-    var service = scope.ServiceProvider.GetRequiredService<UserService>();
-    return await service.GetUserByAsync(email);
+    var principalName = context.User.FindFirst(ClaimTypes.Name)!.Value;
+    return await service.GetUserByPrincipalAsync(principalName);
 })
-.RequireAuthorization("UsersRead")
-.WithName("GetUserByEmail");
+.RequireAuthorization("User.Read")
+.WithName("GetAuthenticatedUser");
 
 app.Run();

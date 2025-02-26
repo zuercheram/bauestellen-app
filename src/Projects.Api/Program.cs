@@ -18,9 +18,9 @@ builder.Services.AddOpenApi();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddMicrosoftIdentityWebApi(builder.Configuration, "AzureAd");
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("ProjectRead", policy =>
+    options.AddPolicy("User.Read", policy =>
     {
-        policy.RequireScope("Project.Read");
+        policy.RequireScope("User.Read");
     });
 });
 
@@ -38,6 +38,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();

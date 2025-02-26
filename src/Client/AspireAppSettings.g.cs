@@ -20,15 +20,14 @@ public static class AspireAppSettings
             ["OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES"] = "true",
             ["OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY"] = "in_memory",
             ["OTEL_EXPORTER_OTLP_ENDPOINT"] = "https://localhost:21170",
-            ["OTEL_EXPORTER_OTLP_HEADERS"] = "x-otlp-api-key=a6fe1f9fcd4fbc6ef66df06f3e70131d",
+            ["OTEL_EXPORTER_OTLP_HEADERS"] = "x-otlp-api-key=6a202a155f30b050677e24d1b93bb483",
             ["OTEL_EXPORTER_OTLP_PROTOCOL"] = "grpc",
             ["OTEL_METRIC_EXPORT_INTERVAL"] = "1000",
             ["OTEL_METRICS_EXEMPLAR_FILTER"] = "trace_based",
-            ["OTEL_RESOURCE_ATTRIBUTES"] = "service.instance.id=eavmnswb",
+            ["OTEL_RESOURCE_ATTRIBUTES"] = "service.instance.id=vwjqufvc",
             ["OTEL_SERVICE_NAME"] = "mobile-client",
             ["OTEL_TRACES_SAMPLER"] = "always_on",
             ["services:cap-api-gateway:https:0"] = "https://localhost:7276",
-            ["services:capp-proj-serv:https:0"] = "https://localhost:7005",
             ["SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION"] = "true",
         };
 }

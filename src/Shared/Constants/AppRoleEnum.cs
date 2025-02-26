@@ -2,7 +2,7 @@
 
 public enum AppRoleEnum
 {
-    FieldWorker,    
+    FieldWorker,
     ProjectLead,
     BackOffice
 }

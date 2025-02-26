@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<controls:ContentViewBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Baustellen.App.Client.Controls"
+             xmlns:viewmodel="clr-namespace:Baustellen.App.Client.ViewModels"
+             x:Class="Baustellen.App.Client.Controls.ConnectivityView">
+    
+    <Grid RowDefinitions="Auto,*">
+        <Label Text="Easily detect connectivity state."
+               FontAttributes="Bold"
+               Margin="12" />
+    </Grid>
+</controls:ContentViewBase>

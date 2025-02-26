@@ -1,11 +1,13 @@
-﻿using Baustellen.App.Client.Services.AppEnvironment;
-using Baustellen.App.Client.Services.ProjectService;
-using Baustellen.App.Client.Services.RequestProvider;
-using Baustellen.App.Client.Services.Settings;
+﻿using Baustellen.App.Client.Models;
+using Baustellen.App.Client.Services;
+using Baustellen.App.Client.ViewModels;
+using Baustellen.App.Client.Views;
 using CommunityToolkit.Maui;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Net.Security;
+using System.Reflection;
 
 namespace Baustellen.App.Client;
 
@@ -19,6 +21,8 @@ public static class MauiProgram
             .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
                 {
+                    fonts.AddFont("FontAwesomeRegular.otf", "FontAwesome-Regular");
+                    fonts.AddFont("FontAwesomeSolid.otf", "FontAwesome-Solid");
                     fonts.AddFont("Quicksand_Bold.otf", "QuicksandBold");
                     fonts.AddFont("Quicksand_Bold_Oblique.otf", "QuicksandBoldOblique");
                     fonts.AddFont("Quicksand_Book.otf", "QuicksandBook");
@@ -31,8 +35,10 @@ public static class MauiProgram
             .ConfigureHandlers()
             .RegisterAppServices()
             .RegisterModelViews()
-            .RegisterViews();
+            .RegisterModel()
+            .RegisterPages();
 
+        RegisterSettings();
 #if DEBUG
         builder.Configuration.AddInMemoryCollection(AspireAppSettings.Settings);
 #endif
@@ -46,7 +52,7 @@ public static class MauiProgram
 
     public static MauiAppBuilder ConfigureHandlers(this MauiAppBuilder mauiAppBuilder)
     {
-#if IOS || MACCATALYST
+#if IOS
         mauiAppBuilder.ConfigureMauiHandlers(handlers =>
         {
             handlers.AddHandler<Microsoft.Maui.Controls.CollectionView, Microsoft.Maui.Controls.Handlers.Items2.CollectionViewHandler2>();
@@ -59,20 +65,14 @@ public static class MauiProgram
 
     public static MauiAppBuilder RegisterAppServices(this MauiAppBuilder builder)
     {
-        builder.Services.AddSingleton<ISettingsService, SettingsService>();
-        builder.Services.AddSingleton<IRequestProvider>(sp =>
+        builder.Services.AddSingleton<AppConnectivityService>();
+        builder.Services.AddSingleton<UserService>();
+        builder.Services.AddSingleton(sp =>
         {
             var debugHandler = sp.GetKeyedService<HttpMessageHandler>("DebugHttpMessageHandler");
             return new RequestProvider(debugHandler!);
         });
-        builder.Services.AddSingleton<IAppEnvironmentService, AppEnvironmentService>(sp =>
-        {
-            var requestProvider = sp.GetRequiredService<IRequestProvider>();
-            var settingsService = sp.GetRequiredService<ISettingsService>();
-            var aes = new AppEnvironmentService(new ProjectService(), new MockProjectService());
-            aes.UpdateDependencies(settingsService.UseMocks);
-            return aes;
-        });
+        builder.Services.AddSingleton<BackendStateModel>();
 
 #if DEBUG
         builder.Services.AddKeyedSingleton<HttpMessageHandler>(
@@ -83,15 +83,15 @@ public static class MauiProgram
                 var handler = new Xamarin.Android.Net.AndroidMessageHandler();
                 handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) =>
                 {
-                    if (cert != null && cert.Issuer.Equals("CN=localhost", StringComparison.OrdinalIgnoreCase))
+                    if (cert != null && (cert.Issuer.Equals("CN=localhost", StringComparison.OrdinalIgnoreCase) || cert.Issuer.Equals("CN=TRAEFIK DEFAULT CERT", StringComparison.OrdinalIgnoreCase) || errors == SslPolicyErrors.None))
                     {
                         return true;
                     }
 
-                    return errors == System.Net.Security.SslPolicyErrors.None;
+                    return false;
                 };
                 return handler;
-#elif IOS || MACCATALYST
+#elif IOS
                 var handler = new NSUrlSessionHandler
                 {
                     TrustOverrideForUrl = (sender, url, trust) => url.StartsWith("https://localhost", StringComparison.OrdinalIgnoreCase),
@@ -110,11 +110,38 @@ public static class MauiProgram
 
     public static MauiAppBuilder RegisterModelViews(this MauiAppBuilder builder)
     {
+        builder.Services.AddSingleton<MainPageViewModel>();
+        builder.Services.AddSingleton<UserProfileViewModel>();
         return builder;
     }
 
-    public static MauiAppBuilder RegisterViews(this MauiAppBuilder builder)
+    public static MauiAppBuilder RegisterModel(this MauiAppBuilder builder)
     {
+        builder.Services.AddSingleton<BackendStateModel>();
+        builder.Services.AddSingleton<AuthUserModel>();
         return builder;
+    }
+
+    public static MauiAppBuilder RegisterPages(this MauiAppBuilder builder)
+    {
+        builder.Services.AddTransient<MainPage>();
+        builder.Services.AddTransient<UserProfilePage>();
+        return builder;
+    }
+
+    public static void RegisterSettings()
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+        using var stream = assembly.GetManifestResourceStream("Baustellen.App.Client.appsettings.json");
+        if (stream is null)
+        {
+            return;
+        }
+        IConfiguration AppConfiguration = new ConfigurationBuilder().AddJsonStream(stream).Build();
+        var appSettings = AppConfiguration.GetSection("Settings").GetChildren().AsEnumerable();
+        foreach (var setting in appSettings)
+        {
+            AppSettings.SetPreferenc(setting.Key, setting.Value ?? string.Empty);
+        }
     }
 }

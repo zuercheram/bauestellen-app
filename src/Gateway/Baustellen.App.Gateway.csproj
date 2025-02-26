@@ -8,12 +8,12 @@
   </PropertyGroup>
 
 	<ItemGroup>		<PackageReference Include="Aspire.Keycloak.Authentication" Version="9.0.0-preview.5.24551.3" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="9.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Authorization" Version="9.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="9.0.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Authorization" Version="9.0.2" />
 		
 		<PackageReference Include="Yarp.ReverseProxy" Version="2.2.0" />
-		<PackageReference Include="Microsoft.Extensions.ServiceDiscovery.Yarp" Version="9.0.0" />
-		<PackageReference Include="AspNetCore.HealthChecks.Uris" />
+		<PackageReference Include="Microsoft.Extensions.ServiceDiscovery.Yarp" Version="9.1.0" />
+		<PackageReference Include="AspNetCore.HealthChecks.Uris" Version="9.0.0" />
 		<PackageReference Include="Microsoft.Identity.Web" Version="3.7.1" />
 	</ItemGroup>
 
