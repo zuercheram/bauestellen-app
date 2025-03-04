@@ -7,7 +7,7 @@
     Shell.FlyoutBehavior="Disabled"
     Shell.BackgroundColor="{StaticResource Primary}"
     Shell.TabBarBackgroundColor="{StaticResource Secondary}"
-    Shell.TitleColor="{StaticResource Gray100}">
+    Shell.TitleColor="{StaticResource PrimaryDark}">
 
     <TabBar>
         <ShellContent

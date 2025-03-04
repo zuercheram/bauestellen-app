@@ -6,8 +6,8 @@
 
     <x:String x:Key="ProjectIcon">&#xf07c;</x:String>
     <x:String x:Key="ProfileIcon">&#xf2bd;</x:String>
-    <x:String x:Key="FilterIcon">&#xf0b0;</x:String>
-    <x:String x:Key="AddIcon">&#xf2b;</x:String>
+    <x:String x:Key="SyncIcon">&#xf2f1;</x:String>
+    <x:String x:Key="AddIcon">&#x2b;</x:String>
     <x:String x:Key="Cloud">&#xf0c2;</x:String>
     <x:String x:Key="CloudUp">&#xf0ee;</x:String>
     <x:String x:Key="CloudDown">&#xf0ed;</x:String>
@@ -44,29 +44,31 @@
         x:Key="ProjectIconImageSource"
         FontAutoScalingEnabled="True"
         FontFamily="FontAwesome-Solid"
+        Color="{StaticResource PrimaryDark}"
         Glyph="{StaticResource ProjectIcon}" />
 
     <FontImageSource
         x:Key="ProfileIconImageSource"
         FontAutoScalingEnabled="True"
         FontFamily="FontAwesome-Solid"
+        Color="{StaticResource PrimaryDark}"
         Glyph="{StaticResource ProfileIcon}" />
 
     <FontImageSource
-        x:Key="FilterIconImageSource"
+        x:Key="SyncIconImageSource"
         FontAutoScalingEnabled="True"
         FontFamily="FontAwesome-Solid"
-        Glyph="{StaticResource FilterIcon}" />
+        Color="{StaticResource PrimaryDark}"
+        Size="22"
+        Glyph="{StaticResource SyncIcon}" />
 
     <FontImageSource
         x:Key="AddFontImageSource"
         FontAutoScalingEnabled="True"
         FontFamily="FontAwesome-Solid"
+        Color="{StaticResource PrimaryDark}"
+        Size="22"
         Glyph="{StaticResource AddIcon}" />
-
-    <FileImageSource
-        x:Key="AddIconSource"
-        File="plus_solid.png"/>
 
     <Style TargetType="VerticalStackLayout" x:Key="MainContentWrapper">
         <Setter Property="Margin" Value="10" />
@@ -476,14 +478,14 @@
     <Style TargetType="Shell" ApplyToDerivedTypes="True">
         <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}" />
         <Setter Property="Shell.ForegroundColor" Value="{OnPlatform WinUI={StaticResource Primary}, Default={StaticResource White}}" />
-        <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource SecondaryDarkText}}" />
+        <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource PrimaryDark}}" />
         <Setter Property="Shell.DisabledColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray950}}" />
         <Setter Property="Shell.UnselectedColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray200}}" />
         <Setter Property="Shell.NavBarHasShadow" Value="False" />
         <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
-        <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource White}}" />
-        <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource White}}" />
-        <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray200}}" />
+        <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Light={StaticResource Accent}, Dark={StaticResource White}}" />
+        <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Light={StaticResource Accent}, Dark={StaticResource White}}" />
+        <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Light={StaticResource PrimaryDark}, Dark={StaticResource Gray200}}" />
     </Style>
 
     <Style TargetType="NavigationPage">
@@ -494,7 +496,7 @@
 
     <Style TargetType="TabbedPage">
         <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray950}}" />
-        <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource White}}" />
+        <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource Accent}, Dark={StaticResource White}}" />
         <Setter Property="UnselectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray950}}" />
         <Setter Property="SelectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
     </Style>

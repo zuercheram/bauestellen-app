@@ -6,15 +6,20 @@
              x:Class="Baustellen.App.Client.Controls.ConnectivityView"
              x:DataType="viewmodel:ConnectivityViewModel">
 
-    <HorizontalStackLayout
-        HeightRequest="30"
-        Padding="15,3"
-        BackgroundColor="{StaticResource Secondary}">
+    <Grid ColumnDefinitions="*,60" BackgroundColor="{StaticResource Secondary}">
+        <HorizontalStackLayout
+            HeightRequest="30"
+            Padding="15,3"
+            >
 
-        <Image Source="cloud_icon.png" IsVisible="{Binding IsOnline}"></Image>
-        <Image Source="cloud_download_icon.png" IsVisible="{Binding IsUploading}"></Image>
-        <Image Source="cloud_upload_icon.png" IsVisible="{Binding IsDownloading}"></Image>
-        <Image Source="cloud_disconnect_icon.png" HorizontalOptions="End" IsVisible="{Binding IsOffline}"></Image>
+            <Image Source="cloud_icon.png" IsVisible="{Binding IsOnline}"></Image>
+            <Image Source="cloud_disconnect_icon.png" HorizontalOptions="End" IsVisible="{Binding IsOffline}"></Image>
+            <Image Source="cloud_download_icon.png" IsVisible="{Binding IsSyncing}"></Image>
+            <Image Source="cloud_upload_icon.png" IsVisible="{Binding IsSyncing}"></Image>
 
-    </HorizontalStackLayout>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Grid.Column="1">
+            <ActivityIndicator HeightRequest="30" Color="{StaticResource Accent}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+        </HorizontalStackLayout>
+    </Grid>
 </ContentView>

@@ -42,7 +42,7 @@ public class UserService(RequestProvider requestProvider) : ApiServiceBase
             throw new ServiceAuthenticationException("No Auth token found!");
         }
 
-        var uri = UriHelper.CombineUri(_baseAddress, $"{ApiUrlBase}/users/{latestUpdateTicks}");
+        var uri = UriHelper.CombineUri(_baseAddress, $"{ApiUrlBase}/users/{latestUpdateTicks.Ticks}");
         try
         {
             var result = await requestProvider.GetAsync<List<UserDto>>(uri, authToken);

@@ -1,4 +1,6 @@
-﻿namespace Baustellen.App.Client.ViewModels;
+﻿using Baustellen.App.Client.Models;
+
+namespace Baustellen.App.Client.ViewModels;
 
 public partial class ViewModelBase : ObservableObject, IQueryAttributable
 {
@@ -10,9 +12,11 @@ public partial class ViewModelBase : ObservableObject, IQueryAttributable
 
     public bool IsNotBusy => !IsBusy;
 
-    public ViewModelBase()
-    {
+    public ConnectivityModel ConnectivityModel { get; set; }
 
+    public ViewModelBase(ConnectivityModel connectivityModel)
+    {
+        ConnectivityModel = connectivityModel;
         InitializeAsyncCommand =
             new AsyncRelayCommand(
                 async () =>
@@ -35,6 +39,7 @@ public partial class ViewModelBase : ObservableObject, IQueryAttributable
     }
     protected async Task IsBusyFor(Func<Task> unitOfWork)
     {
+        ConnectivityModel.IsBusy = true;
         Interlocked.Increment(ref _isBusy);
         OnPropertyChanged(nameof(IsBusy));
 
@@ -46,6 +51,7 @@ public partial class ViewModelBase : ObservableObject, IQueryAttributable
         {
             Interlocked.Decrement(ref _isBusy);
             OnPropertyChanged(nameof(IsBusy));
+            ConnectivityModel.IsBusy = false;
         }
     }
 }

@@ -15,47 +15,39 @@
             <!-- Define Styles -->
             <Style TargetType="Label">
                 <Setter Property="FontSize" Value="18"/>
-                <Setter Property="TextColor" Value="{StaticResource PrimaryDarkText}"/>
-            </Style>
-            <Style TargetType="Border">
-                <Setter Property="Margin" Value="5"/>
-                <Setter Property="BackgroundColor" Value="{StaticResource Gray100}"/>
-                <Setter Property="Stroke" Value="{StaticResource Gray400}"/>
-                <Setter Property="StrokeThickness" Value="1"/>
-                <Setter Property="StrokeShape">
-                    <Setter.Value>
-                        <RoundRectangle CornerRadius="8" />
-                    </Setter.Value>
-                </Setter>
+                <Setter Property="TextColor" Value="{StaticResource Primary}"/>
             </Style>
         </ResourceDictionary>
     </views:ContentPageBase.Resources>
 
     <views:ContentPageBase.ToolbarItems>
-        <ToolbarItem Text="Neues Projekt" IconImageSource="{StaticResource AddFontImageSource}" Command="{Binding AddProjectCommand}"></ToolbarItem>
+        <ToolbarItem Text="Sync Data" IconImageSource="{StaticResource SyncIconImageSource}" Command="{Binding SyncDataCommand}"></ToolbarItem>
+        <ToolbarItem Text="Neues Projekt" IsEnabled="{Binding CanAdd}" IconImageSource="{StaticResource AddFontImageSource}" Command="{Binding AddProjectCommand}"></ToolbarItem>
     </views:ContentPageBase.ToolbarItems>
 
     <VerticalStackLayout>
 
         <control:ConnectivityView VerticalOptions="CenterAndExpand"></control:ConnectivityView>
 
-        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
-
         <CollectionView
             x:Name="offlineProjectCollection"
             ItemsSource="{Binding OfflineProjects}"
-            Margin="20"
-            SelectionMode="Single"
-            SelectedItem="{Binding SelectedProject}"
-            SelectionChangedCommand="{Binding SelectProjectCommand}">
+            SelectionMode="None">
 
             <CollectionView.Header>
-                <Label
-                    Text="Offline Projekte"
-                    FontSize="24"
-                    FontAttributes="Bold"
-                    HorizontalOptions="Center"
-                    Margin="0,10,0,10" />
+                <VerticalStackLayout>
+                    <Label
+                        Text="Offline Projekte"
+                        FontSize="24"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        Margin="0,10,0,10" />
+                    <BoxView
+                        Color="{StaticResource Gray200}"
+                        Margin="20,0,0,0"
+                        HeightRequest="1"
+                        HorizontalOptions="Fill" />
+                </VerticalStackLayout>
             </CollectionView.Header>
 
             <CollectionView.ItemsLayout>
@@ -65,16 +57,12 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <VerticalStackLayout>
-                        <Border>
-                            <template:OfflineProjectItemTemplate />
-                            <Border.Shadow>
-                                <Shadow
-                                    Brush="{StaticResource Black}"
-                                    Offset="1,1"
-                                    Radius="2"
-                                    Opacity="0.5"/>
-                            </Border.Shadow>
-                        </Border>
+                        <template:OfflineProjectItemTemplate />
+                        <BoxView
+                            Color="{StaticResource Gray200}"
+                            Margin="20,0,0,0"
+                            HeightRequest="1"
+                            HorizontalOptions="Fill" />
                     </VerticalStackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
@@ -91,18 +79,22 @@
             IsVisible="{Binding IsOnline}"
             x:Name="onlineProjectCollection"
             ItemsSource="{Binding OnlineProjects}"
-            Margin="20"
-            SelectionMode="Single"
-            SelectedItem="{Binding SelectedProject}"
-            SelectionChangedCommand="{Binding SelectProjectCommand}">
+            SelectionMode="None">
 
             <CollectionView.Header>
-                <Label
-                    Text="Online Projekte"
-                    FontSize="24"
-                    FontAttributes="Bold"
-                    HorizontalOptions="Center"
-                    Margin="0,10,0,10" />
+                <VerticalStackLayout>
+                    <Label
+                        Text="Online Projekte"
+                        FontSize="24"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        Margin="0,10,0,10" />
+                    <BoxView
+                        Color="{StaticResource Gray200}"
+                        Margin="20,0,0,0"
+                        HeightRequest="1"
+                        HorizontalOptions="Fill" />
+                </VerticalStackLayout>
             </CollectionView.Header>
 
             <CollectionView.ItemsLayout>
@@ -112,16 +104,12 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <VerticalStackLayout>
-                        <Border>
-                            <template:RemoteProjectItemTemplate />
-                            <Border.Shadow>
-                                <Shadow
-                                    Brush="{StaticResource Black}"
-                                    Offset="1,1"
-                                    Radius="2"
-                                    Opacity="0.5"/>
-                            </Border.Shadow>
-                        </Border>
+                        <template:RemoteProjectItemTemplate />
+                        <BoxView
+                            Color="{StaticResource Gray200}"
+                            Margin="20,0,0,0"
+                            HeightRequest="1"
+                            HorizontalOptions="Fill" />
                     </VerticalStackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
@@ -133,6 +121,5 @@
                     VerticalTextAlignment="Center" />
             </CollectionView.EmptyView>
         </CollectionView>
-
     </VerticalStackLayout>
 </views:ContentPageBase>

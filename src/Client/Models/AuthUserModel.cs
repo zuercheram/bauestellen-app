@@ -9,14 +9,29 @@ namespace Baustellen.App.Client.Models;
 public class AuthUserModel : ModelBase
 {
     private readonly UserService _userService;
+    private UserDto? _authUser;
 
     private const string _secStoreKey = "bauapp-app-role-sec-store-key";
 
     private bool _isLoggingIn = false;
 
-    public UserDto? AuthenticatedUser { get; set; }
+    public UserDto? AuthenticatedUser
+    {
+        get => _authUser;
+        set => SetProperty(ref _authUser, value);
+    }
     public IAccount? MsalAuthAccount { get; set; }
     public bool IsLoggedIn { get; set; }
+
+    public bool CanAdd
+    {
+        get => AuthenticatedUser != null && (AuthenticatedUser.Role == Shared.Constants.AppRoleEnum.ProjectLead || AuthenticatedUser.Role == Shared.Constants.AppRoleEnum.BackOffice);
+    }
+
+    public bool CanEdit
+    {
+        get => AuthenticatedUser != null && (AuthenticatedUser.Role == Shared.Constants.AppRoleEnum.ProjectLead || AuthenticatedUser.Role == Shared.Constants.AppRoleEnum.BackOffice);
+    }
 
     public AuthUserModel(UserService userService)
     {

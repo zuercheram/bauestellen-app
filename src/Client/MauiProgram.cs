@@ -44,12 +44,9 @@ public static class MauiProgram
 
         RegisterSettings();
 #if DEBUG
-        builder.Configuration.AddInMemoryCollection(AspireAppSettings.Settings);
-#endif
-        builder.AddAppDefaults();
 
+#endif
         MauiApp mauiApp = builder.Build();
-        mauiApp.InitOpenTelemetryServices();
         return mauiApp;
 
     }
@@ -129,6 +126,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<UserProfileViewModel>();
         builder.Services.AddSingleton<ConnectivityViewModel>();
         builder.Services.AddSingleton<EditProjectViewModel>();
+        builder.Services.AddSingleton<ViewProjectViewModel>();
         return builder;
     }
 
@@ -147,6 +145,7 @@ public static class MauiProgram
         builder.Services.AddTransient<MainPage>();
         builder.Services.AddTransient<UserProfilePage>();
         builder.Services.AddTransient<EditProjectPage>();
+        builder.Services.AddTransient<ViewProjectPage>();
         return builder;
     }
 

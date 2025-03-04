@@ -1,6 +1,7 @@
 ﻿using Baustellen.App.Client.Data.Entities;
 using Baustellen.App.Client.Helper;
 using Baustellen.App.Client.Models;
+using Baustellen.App.Client.Services;
 using Baustellen.App.Client.Views;
 using Baustellen.App.Shared.Constants;
 using System.ComponentModel;
@@ -11,7 +12,7 @@ public partial class MainPageViewModel : ViewModelBase
 {
     private readonly ProjectModel _projectModel;
     private readonly AuthUserModel _authUser;
-    private readonly ConnectivityModel _connectivityModel;
+    private readonly SyncingService _syncingService;
 
     private bool _initialized;
 
@@ -21,25 +22,35 @@ public partial class MainPageViewModel : ViewModelBase
     public MainPageViewModel(
         AuthUserModel authUser,
         ConnectivityModel connectivity,
-        ProjectModel projectModel)
+        ProjectModel projectModel,
+        SyncingService syncingService) : base(connectivity)
     {
-        _connectivityModel = connectivity;
         _authUser = authUser;
         _projectModel = projectModel;
+        _syncingService = syncingService;
 
-        _connectivityModel.PropertyChanged += ConnectivityModel_PropertyChanged;
+        ConnectivityModel.PropertyChanged += ConnectivityModel_PropertyChanged;
         _projectModel.PropertyChanged += OnProjectModelPropertyChanged;
+        _authUser.PropertyChanged += AuthUser_PropertyChanged;
+    }
+
+    private void AuthUser_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(CanEdit));
+        OnPropertyChanged(nameof(CanAdd));
     }
 
     ~MainPageViewModel()
     {
-        _connectivityModel.PropertyChanged -= ConnectivityModel_PropertyChanged;
+        ConnectivityModel.PropertyChanged -= ConnectivityModel_PropertyChanged;
         _projectModel.PropertyChanged -= OnProjectModelPropertyChanged;
+        _authUser.PropertyChanged -= AuthUser_PropertyChanged;
     }
 
-    public bool IsOnline { get => _connectivityModel.IsOnline; }
+    public bool CanEdit => _authUser.CanEdit;
+    public bool CanAdd => _authUser.CanAdd;
 
-    public Project SelectedProject { get; set; }
+    public bool IsOnline { get => ConnectivityModel.IsOnline; }
 
     public override async Task InitializeAsync()
     {
@@ -80,6 +91,15 @@ public partial class MainPageViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    private async Task SyncDataAsync()
+    {
+        await ConnectivityModel.ConnectivityCheck();
+        await _syncingService.SyncProjects();
+        await _syncingService.SyncAppUser();
+        await _projectModel.FetchOnlineProjectsAsync();
+    }
+
+    [RelayCommand]
     private async Task RemoveOfflineProjectAsync(Project project)
     {
         await _projectModel.MoveProjectToRemoteListAsync(project);
@@ -92,26 +112,32 @@ public partial class MainPageViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private async Task SelectProjectAsync()
+    private async Task EditProjectAsync(Project project)
     {
-        if (SelectedProject == null)
-        {
-            return;
-        }
         var navigationParameter = new Dictionary<string, object>
         {
-            { AppConstants.ProjecEditEntity, SelectedProject },
-            { AppConstants.IsRemoteProjectEdit, !OfflineProjects.Any(x => x.Id == SelectedProject.Id)}
+            { AppConstants.ProjecEditEntity, project },
+            { AppConstants.IsRemoteProjectEdit, !OfflineProjects.Any(x => x.Id == project.Id)}
         };
         await Navigation.NavigateToAsync(nameof(EditProjectPage), navigationParameter);
     }
 
+    [RelayCommand]
+    private async Task ViewProjectAsync(Project project)
+    {
+        var navigationParameter = new Dictionary<string, object>
+        {
+            { AppConstants.ProjecEditEntity, project }
+        };
+        await Navigation.NavigateToAsync(nameof(ViewProjectPage), navigationParameter);
+    }
+
     private void ConnectivityModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(_connectivityModel.IsOnline))
+        if (e.PropertyName == nameof(ConnectivityModel.IsOnline))
         {
             OnPropertyChanged(nameof(IsOnline));
-            if (_connectivityModel.IsOnline)
+            if (ConnectivityModel.IsOnline)
             {
                 _ = _projectModel.FetchOnlineProjectsAsync();
             }

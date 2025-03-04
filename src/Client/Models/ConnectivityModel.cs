@@ -9,8 +9,7 @@ public class ConnectivityModel : ModelBase
 
     private bool _backendIsAvailable = false;
     private bool _isOnline = false;
-    private bool _isDownloading = false;
-    private bool _isUploading = false;
+    private bool _isBusy;
 
     public bool BackendIsAvailable {
         get => _backendIsAvailable;
@@ -21,16 +20,10 @@ public class ConnectivityModel : ModelBase
         private set => SetProperty(ref _isOnline, value);
     }
 
-    public bool IsDownloading
+    public bool IsBusy
     {
-        get => _isDownloading;
-        set => SetProperty(ref _isDownloading, value);
-    }
-
-    public bool IsUploading
-    {
-        get => _isUploading;
-        set => SetProperty(ref _isUploading, value);
+        get => _isBusy;
+        set => SetProperty(ref _isBusy, value);
     }
 
     public bool DeviceIsOnline { get => Connectivity.NetworkAccess == NetworkAccess.Internet || Connectivity.NetworkAccess == NetworkAccess.ConstrainedInternet; }
@@ -47,11 +40,12 @@ public class ConnectivityModel : ModelBase
         Connectivity.ConnectivityChanged -= OnConnectivityChanged;
     }
 
-    public async Task ConnectivityCheck(bool refresh = true)
+    public async Task ConnectivityCheck()
     {
+        IsOnline = Connectivity.Current.NetworkAccess == NetworkAccess.Internet || Connectivity.Current.NetworkAccess == NetworkAccess.ConstrainedInternet;
+        if (!_isOnline) { BackendIsAvailable = false; }
         var backendState = await _backendStateService.FetchBackendState();
         BackendIsAvailable = backendState.BackendAvailable;
-        IsOnline = Connectivity.NetworkAccess == NetworkAccess.Internet || Connectivity.NetworkAccess == NetworkAccess.ConstrainedInternet;
         OnPropertyChanged(nameof(BackendIsAvailable));
         OnPropertyChanged(nameof(IsOnline));
     }

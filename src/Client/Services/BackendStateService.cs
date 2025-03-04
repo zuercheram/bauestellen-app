@@ -1,5 +1,4 @@
-﻿using Baustellen.App.Client.Authentication.MSALClient;
-using Baustellen.App.Client.Helper;
+﻿using Baustellen.App.Client.Helper;
 using Baustellen.App.Client.Services.Base;
 using Baustellen.App.Shared.Models.ViewModels;
 
@@ -11,19 +10,10 @@ public class BackendStateService(RequestProvider requestProvider) : ApiServiceBa
 
     public async Task<BackendStateDto> FetchBackendState()
     {
-        var authToken = await PublicClientSingleton.Instance.AcquireTokenSilentAsync();
-        if (string.IsNullOrEmpty(authToken))
-        {
-            return new BackendStateDto
-            {
-                BackendAvailable = false
-            };
-        }
-
         var uri = UriHelper.CombineUri(_baseAddress, $"{ApiUrlBase}/availability");
         try
         {
-            var result = await requestProvider.GetAsync<BackendStateDto>(uri, authToken);
+            var result = await requestProvider.GetAsync<BackendStateDto>(uri);
             if (result == null)
             {
                 return new BackendStateDto

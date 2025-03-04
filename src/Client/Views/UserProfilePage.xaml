@@ -1,59 +1,60 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <views:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:views="clr-namespace:Baustellen.App.Client.Views"
-             xmlns:viewmodel="clr-namespace:Baustellen.App.Client.ViewModels"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:Class="Baustellen.App.Client.Views.UserProfilePage"
-             x:DataType="viewmodel:UserProfileViewModel"
-             Title="{Binding Title}">
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:views="clr-namespace:Baustellen.App.Client.Views"
+            xmlns:viewmodel="clr-namespace:Baustellen.App.Client.ViewModels"
+            xmlns:control="clr-namespace:Baustellen.App.Client.Controls"
+            xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+            x:Class="Baustellen.App.Client.Views.UserProfilePage"
+            x:DataType="viewmodel:UserProfileViewModel"
+            Title="{Binding Title}">
 
-    <VerticalStackLayout Spacing="10" Margin="10">
+    <VerticalStackLayout>
 
-        <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"></ActivityIndicator>
+        <control:ConnectivityView VerticalOptions="CenterAndExpand"></control:ConnectivityView>
 
-        <HorizontalStackLayout Spacing="10">
-            <Image Source="dotnet_bot.png"
-                   SemanticProperties.Description="The dot net bot waving hello!"
-                   HeightRequest="64" />
-            <Label FontSize="22" FontAttributes="Bold" Text="{Binding AppTitle}" VerticalOptions="End" />
+        <VerticalStackLayout Spacing="10" Margin="10">
 
-        </HorizontalStackLayout>
+            <HorizontalStackLayout Spacing="10">
+                <Label FontSize="22" FontAttributes="Bold" Text="{Binding AppTitle}" VerticalOptions="End" />
 
-        <HorizontalStackLayout Spacing="10">
-            <Label FontSize="15" FontAttributes="Bold" Text="Applikationsversion"></Label>
-            <Label FontSize="15" Text="{Binding Version}" VerticalOptions="End" />
-        </HorizontalStackLayout>
+            </HorizontalStackLayout>
 
-        <HorizontalStackLayout Spacing="10" IsVisible="{Binding IsLoggedIn}">
-            <Label FontSize="15" FontAttributes="Bold" Text="Vorname"></Label>
-            <Label FontSize="15" Text="{Binding FirstName}" VerticalOptions="End" />
-        </HorizontalStackLayout>
+            <HorizontalStackLayout Spacing="10">
+                <Label FontSize="15" FontAttributes="Bold" Text="Applikationsversion"></Label>
+                <Label FontSize="15" Text="{Binding Version}" VerticalOptions="End" />
+            </HorizontalStackLayout>
 
-        <HorizontalStackLayout Spacing="10" IsVisible="{Binding IsLoggedIn}">
-            <Label FontSize="15" FontAttributes="Bold" Text="Nachname"></Label>
-            <Label FontSize="15" Text="{Binding LastName}" VerticalOptions="End" />
-        </HorizontalStackLayout>
+            <HorizontalStackLayout Spacing="10" IsVisible="{Binding IsLoggedIn}">
+                <Label FontSize="15" FontAttributes="Bold" Text="Vorname"></Label>
+                <Label FontSize="15" Text="{Binding FirstName}" VerticalOptions="End" />
+            </HorizontalStackLayout>
 
-        <HorizontalStackLayout Spacing="10" IsVisible="{Binding IsLoggedIn}">
-            <Label FontSize="15" FontAttributes="Bold" Text="Email"></Label>
-            <Label FontSize="15" Text="{Binding Email}" VerticalOptions="End" />
-        </HorizontalStackLayout>
+            <HorizontalStackLayout Spacing="10" IsVisible="{Binding IsLoggedIn}">
+                <Label FontSize="15" FontAttributes="Bold" Text="Nachname"></Label>
+                <Label FontSize="15" Text="{Binding LastName}" VerticalOptions="End" />
+            </HorizontalStackLayout>
 
-        <HorizontalStackLayout Spacing="10" IsVisible="{Binding IsLoggedIn}">
-            <Label FontSize="15" FontAttributes="Bold" Text="Rolle"></Label>
-            <Label FontSize="15" Text="{Binding UserRole}" VerticalOptions="End" />
-        </HorizontalStackLayout>
+            <HorizontalStackLayout Spacing="10" IsVisible="{Binding IsLoggedIn}">
+                <Label FontSize="15" FontAttributes="Bold" Text="Email"></Label>
+                <Label FontSize="15" Text="{Binding Email}" VerticalOptions="End" />
+            </HorizontalStackLayout>
 
-        <Button
-            Text="Abmelden"
-            IsVisible="{Binding IsLoggedIn}"
-            Command="{Binding SignOutCommand}"></Button>
+            <HorizontalStackLayout Spacing="10" IsVisible="{Binding IsLoggedIn}">
+                <Label FontSize="15" FontAttributes="Bold" Text="Rolle"></Label>
+                <Label FontSize="15" Text="{Binding UserRole}" VerticalOptions="End" />
+            </HorizontalStackLayout>
 
-        <Button
-            Text="Anmelden"
-            IsVisible="{Binding IsLoggedIn, Converter={toolkit:InvertedBoolConverter}}"
-            Command="{Binding SignInCommand}"></Button>
+            <Button
+                Text="Abmelden"
+                IsVisible="{Binding IsLoggedIn}"
+                Command="{Binding SignOutCommand}"></Button>
 
+            <Button
+                Text="Anmelden"
+                IsVisible="{Binding IsLoggedIn, Converter={toolkit:InvertedBoolConverter}}"
+                Command="{Binding SignInCommand}"></Button>
+
+        </VerticalStackLayout>
     </VerticalStackLayout>
 </views:ContentPageBase>

@@ -13,6 +13,9 @@ public partial class ConnectivityView : ContentView
 
     void OnHandlerChanged(object sender, EventArgs e)
     {
-        BindingContext = Handler.MauiContext.Services.GetRequiredService<ConnectivityViewModel>();
+        if (Handler?.MauiContext != null)
+        {
+            BindingContext = Handler.MauiContext.Services.GetRequiredService<ConnectivityViewModel>();
+        }
     }
 }

@@ -21,27 +21,13 @@ var identityApi = builder.AddProject<Baustellen_App_Identity_Api>(AppConstants.I
     .WithExternalHttpEndpoints();
 
 var projectApi = builder.AddProject<Baustellen_App_Projects_Api>(AppConstants.ProjectApi, launchProfileName)
-    .WaitFor(projectDb)    
+    .WaitFor(projectDb)
     .WithReference(projectDb)
     .WithReference(identityApi)
     .WithExternalHttpEndpoints();
 
-var mobileApp = builder.AddMobileProject(AppConstants.MobileApp, "../Client", clientStubProjectPath: "../ClientStub/Baustellen.App.ClientStub.csproj");
-    
-
-var webclient = builder.AddNpmApp(AppConstants.WebClient, "../WebClient")
-    .WithReference(projectApi)    
-    .WaitFor(projectApi)
-    .WithHttpsEndpoint(env: "PORT")
-    .WithExternalHttpEndpoints()    
-    .PublishAsDockerFile();
-
 var gateway = builder.AddProject<Baustellen_App_Gateway>(AppConstants.GatewayApi)
     .WithReference(projectApi)
-    .WithReference(identityApi)
-    .WithReference(webclient);
-
-mobileApp.WithReference(gateway);
-webclient.WithReference(gateway);
+    .WithReference(identityApi);
 
 builder.Build().Run();

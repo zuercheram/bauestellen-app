@@ -41,9 +41,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("api/users/{timestamp}", async (DateTime timestamp, [FromServices] UserService service) =>
+app.MapGet("api/users/{timestamp}", async (long timestamp, [FromServices] UserService service) =>
 {
-    return await service.GetUsersAsync(timestamp);
+    var datetime = new DateTime(timestamp, DateTimeKind.Utc);
+    return await service.GetUsersAsync(datetime);
 })
 .RequireAuthorization("User.Read")
 .WithName("GetUsers");

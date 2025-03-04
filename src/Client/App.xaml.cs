@@ -1,6 +1,5 @@
 ﻿using Baustellen.App.Client.Models;
 using Baustellen.App.Client.Services;
-using Baustellen.App.Client.ViewModels;
 namespace Baustellen.App.Client;
 
 public partial class App : Application
@@ -35,13 +34,7 @@ public partial class App : Application
 
     private void InitApp()
     {
-        if(_connectivityModel.DeviceIsOnline)
-        {
-            _ = _authUser.SignIn().ContinueWith(async (t) =>
-            {
-                await _connectivityModel.ConnectivityCheck();
-            });
-        }
+        Task.Run(() => _connectivityModel.ConnectivityCheck());
     }
 
     protected override void OnSleep()

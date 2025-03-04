@@ -33,7 +33,15 @@ public class ProjectRepository : RepositoryBase
             }
             else
             {
-                result = conn.Update(project);
+                var checkProject = Get(project.Id);
+                if (checkProject == null)
+                {
+                    result = conn.Insert(project);
+                }
+                else
+                {
+                    result = conn.Update(project);
+                }
             }
 
             StatusMessage = string.Format("{0} record(s) added.", result);

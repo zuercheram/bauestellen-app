@@ -193,7 +193,7 @@ public partial class EditProjectViewModel : ViewModelBase
         }
     }
 
-    public EditProjectViewModel(EditProjectModel model, AppUserModel appUserModel)
+    public EditProjectViewModel(EditProjectModel model, AppUserModel appUserModel, ConnectivityModel connectivityModel) : base(connectivityModel)
     {
         _model = model;
         _appUserModel = appUserModel;
@@ -210,7 +210,7 @@ public partial class EditProjectViewModel : ViewModelBase
 
     public override async Task InitializeAsync()
     {
-        await Task.Run(_appUserModel.FetchLocalProjectManagers);
+        _appUserModel.FetchLocalProjectManagers();
         UpdateProjectLeads();
     }
 

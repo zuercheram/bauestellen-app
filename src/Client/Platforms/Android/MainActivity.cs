@@ -2,10 +2,8 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
 using Baustellen.App.Client.Authentication.MSALClient;
 using Baustellen.App.Client.Platforms.Android;
-using Baustellen.App.Client.Services;
 using Microsoft.Identity.Client;
 
 namespace Baustellen.App.Client;

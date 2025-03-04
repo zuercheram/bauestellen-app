@@ -133,13 +133,10 @@ public class MSALClientHelper
                     .AcquireTokenSilent(scopes, existingUser)
                     .ExecuteAsync()
                     .ConfigureAwait(false);
-
-                this.Roles = GetUserRoles();
             }
             else
             {
                 this.AuthResult = await SignInUserInteractivelyAsync(scopes);
-                this.Roles = GetUserRoles();
             }
         }
         catch (MsalUiRequiredException ex)
@@ -151,7 +148,6 @@ public class MSALClientHelper
                 .AcquireTokenInteractive(scopes)
                 .ExecuteAsync()
                 .ConfigureAwait(false);
-            this.Roles = GetUserRoles();
         }
         catch (MsalException msalEx)
         {
@@ -179,7 +175,6 @@ public class MSALClientHelper
                     .WithClaims(extraclaims)
                     .ExecuteAsync()
                     .ConfigureAwait(false);
-            this.Roles = GetUserRoles();
         }
         catch (MsalException msalEx)
         {
@@ -265,29 +260,5 @@ public class MSALClientHelper
         }
 
         return accounts.SingleOrDefault();
-    }
-
-    public List<string> GetUserRoles()
-    {
-        if (this.AuthResult == null) return new List<string>();
-        var idToken = this.AuthResult.IdToken;
-        var handler = new JwtSecurityTokenHandler();
-        var token = handler.ReadJwtToken(idToken);
-        // Get the role claim value
-        var roleClaim = token.Claims.FirstOrDefault(c => c.Type == "roles")?.Value;
-
-        var userRoles = new List<string>();
-
-        if (!string.IsNullOrEmpty(roleClaim))
-        {
-            // If the role claim exists, add it to the IdTokenClaims
-            userRoles = new List<string> { roleClaim };
-        }
-        else
-        {
-            // If the role claim doesn't exist, add a message indicating that no role claim was found
-            userRoles = new List<string> { "No role claim found in ID token" };
-        }
-        return userRoles;
     }
 }

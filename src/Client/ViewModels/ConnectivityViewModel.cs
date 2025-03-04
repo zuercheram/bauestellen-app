@@ -1,34 +1,72 @@
 ﻿using Baustellen.App.Client.Models;
+using Baustellen.App.Client.Services;
 
 namespace Baustellen.App.Client.ViewModels;
 
 public class ConnectivityViewModel : ViewModelBase
 {
-    private readonly ConnectivityModel _connectivityModel;
+    private readonly SyncingService _syncingService;
 
-    public ConnectivityViewModel(ConnectivityModel model)
+    private bool _isSyncing;
+
+    public bool IsSyncing
     {
-        _connectivityModel = model;
-        _connectivityModel.PropertyChanged += _connectivityModel_PropertyChanged;
+        get => _isSyncing;
+        set => SetProperty(ref _isSyncing, value);
+    }
+
+    public bool IsBusy => ConnectivityModel.IsBusy;
+
+    public ConnectivityViewModel(ConnectivityModel model, SyncingService syncingService) : base(model)
+    {
+        _syncingService = syncingService;
+
+        ConnectivityModel.PropertyChanged += ConnectivityModel_PropertyChanged;
+
+        _syncingService.ProjectSyncing += SyncingService_ProjectSyncing;
+        _syncingService.ProjectSynced += SyncingService_ProjectSynced;
+        _syncingService.UserSyncing += SyncingService_UserSyncing;
+        _syncingService.UserSynced += SyncingService_UserSynced;
+    }
+
+    private void SyncingService_UserSynced(object? sender, EventArgs e)
+    {
+        IsSyncing = false;
+    }
+
+    private void SyncingService_UserSyncing(object? sender, EventArgs e)
+    {
+        IsSyncing = true;
+    }
+
+    private void SyncingService_ProjectSynced(object? sender, EventArgs e)
+    {
+        IsSyncing = false;
+    }
+
+    private void SyncingService_ProjectSyncing(object? sender, EventArgs e)
+    {
+        IsSyncing = true;
     }
 
     ~ConnectivityViewModel()
     {
-        _connectivityModel.PropertyChanged -= _connectivityModel_PropertyChanged;
+        ConnectivityModel.PropertyChanged -= ConnectivityModel_PropertyChanged;
+
+        _syncingService.ProjectSyncing -= SyncingService_ProjectSyncing;
+        _syncingService.ProjectSynced -= SyncingService_ProjectSynced;
+        _syncingService.UserSyncing -= SyncingService_UserSyncing;
+        _syncingService.UserSynced -= SyncingService_UserSynced;
     }
 
-    private void _connectivityModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    private void ConnectivityModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
+        OnPropertyChanged(nameof(IsBusy));
         OnPropertyChanged(nameof(IsOnline));
         OnPropertyChanged(nameof(IsOffline));
-        OnPropertyChanged(nameof(IsUploading));
-        OnPropertyChanged(nameof(IsDownloading));
     }
 
-    public bool IsOnline { get => _connectivityModel.IsOnline; }
+    public bool IsOnline { get => ConnectivityModel.IsOnline; }
 
-    public bool IsOffline { get => !_connectivityModel.IsOnline; }
-
-    public bool IsUploading { get => _connectivityModel.IsUploading; }
-    public bool IsDownloading { get => _connectivityModel.IsDownloading; }
+    public bool IsOffline { get => !ConnectivityModel.IsOnline; }
 }

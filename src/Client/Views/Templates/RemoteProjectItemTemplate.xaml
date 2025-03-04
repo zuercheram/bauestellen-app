@@ -10,22 +10,35 @@
 
     <SwipeView.Resources>
         <Style TargetType="StackLayout">
-            <Setter Property="Padding" Value="10" />
-            <Setter Property="BackgroundColor" Value="{StaticResource Gray100}" />
+            <Setter Property="Padding" Value="0,10,0,10" />
+            <Setter Property="BackgroundColor" Value="{StaticResource White}" />
         </Style>
     </SwipeView.Resources>
 
     <SwipeView.RightItems>
         <SwipeItems>
             <SwipeItem
-                BackgroundColor="{StaticResource Gray200}"
-                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=MarkProjectAsOfflineCommand, x:DataType=viewmodel:MainPageViewModel}"
+                BackgroundColor="{StaticResource PrimaryDark}"
+                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=RemoveOfflineProjectCommand, x:DataType=viewmodel:MainPageViewModel}"
                 CommandParameter="{Binding}"
                 IconImageSource="cloud_disconnect_icon.png"/>
+            <SwipeItem
+                IsVisible="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=CanEdit, x:DataType=viewmodel:MainPageViewModel}"
+                BackgroundColor="{StaticResource PrimaryDarker}"
+                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=EditProjectCommand, x:DataType=viewmodel:MainPageViewModel}"
+                CommandParameter="{Binding}"
+                IconImageSource="edit_pencil_icon.png"/>
         </SwipeItems>
     </SwipeView.RightItems>
-        <StackLayout>
-            <Label Text="{Binding RefNumber}" FontAttributes="Bold" />
-            <Label Text="{Binding Name}" />
+        <StackLayout Padding="20,10,20,10">
+            <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=ViewProjectCommand, x:DataType=viewmodel:MainPageViewModel}" CommandParameter="{Binding .}"></TapGestureRecognizer>
+            </StackLayout.GestureRecognizers>
+            <HorizontalStackLayout>
+                <Label Text="{Binding RefNumber}" FontAttributes="Bold" />
+                <Label Text=" - " />
+                <Label Text="{Binding Name}" />
+            </HorizontalStackLayout>
+            <Label Text="{Binding ManagerEmail}" />
         </StackLayout>
 </SwipeView>

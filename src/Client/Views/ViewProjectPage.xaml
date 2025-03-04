@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:views="clr-namespace:Baustellen.App.Client.Views"
+            xmlns:viewmodel="clr-namespace:Baustellen.App.Client.ViewModels"
+            xmlns:control="clr-namespace:Baustellen.App.Client.Controls"
+            x:Class="Baustellen.App.Client.Views.ViewProjectPage"
+            x:DataType="viewmodel:ViewProjectViewModel"
+            Title="Projekt Ansicht">
+    <ScrollView>
+
+        <VerticalStackLayout>
+
+            <control:ConnectivityView VerticalOptions="CenterAndExpand"></control:ConnectivityView>
+
+            <VerticalStackLayout Style="{StaticResource MainContentWrapper}">
+                <Grid ColumnDefinitions="auto" Style="{StaticResource GridHeader}">
+                    <Label
+                    Grid.Column="0"
+                    Text="{Binding Project.Name}"
+                    Style="{StaticResource Headline}" HorizontalOptions="Start" />
+                </Grid>
+                <VerticalStackLayout>
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="*,*,*,*,*">
+                        <Label Grid.Column="0" Grid.Row="0" Text="Referenz Nummer" FontAttributes="Bold" />
+                        <Label Grid.Column="1" Grid.Row="0" Text="{Binding Project.RefNumber}" />
+                        <Label Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Text="Projekt Leiter" FontAttributes="Bold"/>
+                        <Label Grid.Column="1" Grid.Row="1" Text="{Binding Project.ManagerName}" />
+                        <Label Grid.Column="1" Grid.Row="2" Text="{Binding Project.ManagerEmail}" />
+                        <Label Grid.Column="0" Grid.Row="3" Text="Projekt Start" FontAttributes="Bold" />
+                        <Label Grid.Column="1" Grid.Row="3" Text="{Binding Project.Start}" />
+                        <Label Grid.Column="0" Grid.Row="4" Text="Projekt Abschluss" FontAttributes="Bold" />
+                        <Label Grid.Column="1" Grid.Row="4" Text="{Binding Project.Commissioning}" />
+                    </Grid>
+                    <Label Text="Kundendaten" FontAttributes="Bold" FontSize="20" Margin="0,20,0,10"></Label>
+                    <HorizontalStackLayout>
+                        <Label Text="{Binding Project.CustomerFirstName}" />
+                        <Label Text=" "></Label>
+                        <Label Text="{Binding Project.CustomerLastName}" />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout>
+                        <Label Text="{Binding Project.CustomerStreet}" />
+                        <Label Text=" "></Label>
+                        <Label Text="{Binding Project.CustomerHouseNumber}" />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Margin="0,0,0,20">
+                        <Label Text="{Binding Project.CustomerZip}" />
+                        <Label Text=" "></Label>
+                        <Label Text="{Binding Project.CustomerCity}" />
+                    </HorizontalStackLayout>
+                    <Label Text="{Binding Project.CustomerTelefon}" />
+                    <Label Text="{Binding Project.CustomerEmail}" />
+                    <Label Text="Objektdaten" FontAttributes="Bold" FontSize="20" Margin="0,20,0,10"></Label>
+                    <HorizontalStackLayout>
+                        <Label Text="{Binding Project.ObjectStreet}" />
+                        <Label Text=" "></Label>
+                        <Label Text="{Binding Project.ObjectNumber}" />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout>
+                        <Label Text="{Binding Project.ObjectZip}" />
+                        <Label Text=" "></Label>
+                        <Label Text="{Binding Project.ObjectCity}" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</views:ContentPageBase>

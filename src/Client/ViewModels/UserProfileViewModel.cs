@@ -55,7 +55,7 @@ public partial class UserProfileViewModel : ViewModelBase
 
     private bool IsRoutedToForSignIn { get; set; }
 
-    public UserProfileViewModel(AuthUserModel userModel)
+    public UserProfileViewModel(AuthUserModel userModel, ConnectivityModel connectivityModel) : base(connectivityModel)
     {
         _userModel = userModel;
     }
