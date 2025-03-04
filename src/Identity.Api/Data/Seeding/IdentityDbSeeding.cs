@@ -34,6 +34,17 @@ public class IdentityDbSeeding : IDbSeeder<IdentityDbContext>
 
         context.Users.Add(projectlead);
 
+        var projectlead2 = new User
+        {
+            Email = "plthesecond.user@baustellen.app",
+            PrincipalName = "plthesecond.user@zuercheram1.onmicrosoft.com",
+            FirstName = "PL the second",
+            LastName = "Test 2",
+            Role = Shared.Constants.AppRoleEnum.ProjectLead
+        };
+
+        context.Users.Add(projectlead2);
+
         var backoffice = new User
         {
             Email = "backoffice.user@baustellen.app",

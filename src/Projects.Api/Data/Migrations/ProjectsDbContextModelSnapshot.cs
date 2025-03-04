@@ -51,7 +51,7 @@ namespace Baustellen.App.Projects.Api.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("Commissioning")
+                    b.Property<DateTime?>("Commissioning")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("CreatedAt")
@@ -67,14 +67,12 @@ namespace Baustellen.App.Projects.Api.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("CustomerFirstName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("CustomerHouseNumber")
                         .HasColumnType("text");
 
                     b.Property<string>("CustomerLastName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("CustomerStreet")

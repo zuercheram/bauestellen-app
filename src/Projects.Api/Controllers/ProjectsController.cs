@@ -1,11 +1,13 @@
 using Baustellen.App.Projects.Api.Services;
 using Baustellen.App.Shared.Models.InputModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Baustellen.App.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Policy = "User.Read")]
 public class ProjectsController(
     ProjectService projectService
 ) : ControllerBase
@@ -38,8 +40,8 @@ public class ProjectsController(
     [HttpPost("update")]
     public async Task<IActionResult> UpdateProjects([FromBody] ProjectUpdateInputDto inputModel)
     {
-        await projectService.UpdateProjects(inputModel);
-        return Ok();
+        var updatedProjects = await projectService.UpdateProjects(inputModel);
+        return Ok(updatedProjects);
     }
 
 }

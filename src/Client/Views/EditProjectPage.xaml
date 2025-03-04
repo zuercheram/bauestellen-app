@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<view:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:view="clr-namespace:Baustellen.App.Client.Views"
+             xmlns:viewmodel="clr-namespace:Baustellen.App.Client.ViewModels"
+             xmlns:model="clr-namespace:Baustellen.App.Client.Data.Entities"
+             x:Class="Baustellen.App.Client.Views.EditProjectPage"
+             x:DataType="viewmodel:EditProjectViewModel"
+             Title="Bearbeiten">
+    <ScrollView>
+        <VerticalStackLayout Style="{StaticResource MainContentWrapper}">
+            <Grid ColumnDefinitions="auto,*" Style="{StaticResource GridHeader}">
+                <Label
+                    Grid.Column="0"
+                    Text="{Binding PageTitle}"
+                    Style="{StaticResource Headline}" HorizontalOptions="Start" />
+
+                <Image
+                    Grid.Column="1"
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"
+                    Source="cloud_icon.png"
+                    IsVisible="{Binding IsOnlineProject}" />
+                <Image
+                    Grid.Column="1"
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"
+                    Source="cloud_disconnect_icon.png"
+                    IsVisible="{Binding IsOfflineProject}" />
+
+            </Grid>
+            <VerticalStackLayout>
+                <Label
+                    Text="Projekt Name" />
+                <Entry Text="{Binding ProjectName}" Keyboard="Plain" />
+                <Label
+                    Text="Referenz Nummer" />
+                <Entry Text="{Binding RefNumber}" Keyboard="Plain" />
+                <Label Text="Projekt Leiter" />
+                <Picker Title="Projektleiter Auswählen" ItemsSource="{Binding ProjectLeads}" SelectedItem="{Binding SelectedProjectLead}" ItemDisplayBinding="{Binding DisplayName, x:DataType=model:AppUser}">
+                </Picker>
+                <Grid ColumnDefinitions="*,*" RowDefinitions="*,*">
+                    <Label Grid.Row="0" Grid.Column="0" Text="Projekt Start" />
+                    <DatePicker Grid.Row="1" Grid.Column="0" Date="{Binding Start}" Format="dd.MM.yyyy" />
+                    <Label Grid.Row="0" Grid.Column="1" Text="Projekt Abschluss" />
+                    <DatePicker Grid.Row="1" Grid.Column="1" Date="{Binding Commissioning}" Format="dd.MM.yyyy" />
+                </Grid>
+                <Label Text="Kundendaten" FontSize="20" Margin="0,10,0,10"></Label>
+                <Grid ColumnDefinitions="*,*" RowDefinitions="*,*">
+                    <Label Grid.Row="0" Grid.Column="0" Text="Vorname" />
+                    <Entry Grid.Row="1" Grid.Column="0" Text="{Binding CustomerFirstName}" />
+                    <Label Grid.Row="0" Grid.Column="1" Text="Nachname" />
+                    <Entry Grid.Row="1" Grid.Column="1" Text="{Binding CustomerLastName}" />
+                </Grid>
+                <Grid ColumnDefinitions="*,100" RowDefinitions="*,*">
+                    <Label Grid.Row="0" Grid.Column="0" Text="Strasse" />
+                    <Entry Grid.Row="1" Grid.Column="0" Text="{Binding CustomerStreet}" />
+                    <Label Grid.Row="0" Grid.Column="1" Text="Nummer" />
+                    <Entry Grid.Row="1" Grid.Column="1" Text="{Binding CustomerHouseNumber}" />
+                </Grid>
+                <Grid ColumnDefinitions="*,100" RowDefinitions="*,*">
+                    <Label Grid.Row="0" Grid.Column="0" Text="Ort" />
+                    <Entry Grid.Row="1" Grid.Column="0" Text="{Binding CustomerCity}" />
+                    <Label Grid.Row="0" Grid.Column="1" Text="PLZ" />
+                    <Entry Grid.Row="1" Grid.Column="1" Text="{Binding CustomerZip}" />
+                </Grid>
+                <Label Text="Telefonnummer"></Label>
+                <Entry Text="{Binding CustomerTelefon}" Keyboard="Telephone" />
+                <Label Text="Email"></Label>
+                <Entry Text="{Binding CustomerEmail}" Keyboard="Email" />
+                <Label Text="Objektdaten" FontSize="20" Margin="0,10,0,10"></Label>
+                <Grid ColumnDefinitions="*,100" RowDefinitions="*,*">
+                    <Label Grid.Row="0" Grid.Column="0" Text="Strasse" />
+                    <Entry Grid.Row="1" Grid.Column="0" Text="{Binding ObjectStreet}" />
+                    <Label Grid.Row="0" Grid.Column="1" Text="Nummer" />
+                    <Entry Grid.Row="1" Grid.Column="1" Text="{Binding ObjectNumber}" />
+                </Grid>
+                <Grid ColumnDefinitions="*,100" RowDefinitions="*,*">
+                    <Label Grid.Row="0" Grid.Column="0" Text="Ort" />
+                    <Entry Grid.Row="1" Grid.Column="0" Text="{Binding ObjectCity}" />
+                    <Label Grid.Row="0" Grid.Column="1" Text="PLZ" />
+                    <Entry Grid.Row="1" Grid.Column="1" Text="{Binding ObjectZip}" />
+                </Grid>
+                <Button
+                    Text="Speichern"
+                    Command="{Binding SaveProjectCommand}"></Button>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</view:ContentPageBase>

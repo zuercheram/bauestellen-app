@@ -1,4 +1,4 @@
-﻿namespace Baustellen.App.Client.Services;
+﻿namespace Baustellen.App.Client.Services.Base;
 
 public class ApiServiceBase
 {

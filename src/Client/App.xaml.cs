@@ -1,17 +1,31 @@
 ﻿using Baustellen.App.Client.Models;
-
+using Baustellen.App.Client.Services;
+using Baustellen.App.Client.ViewModels;
 namespace Baustellen.App.Client;
 
 public partial class App : Application
 {
     private readonly AuthUserModel _authUser;
+    private readonly SyncingService _syncingService;
+    private readonly ConnectivityModel _connectivityModel;
 
-    public App(AuthUserModel authUser)
+    public App(AuthUserModel authUser, ConnectivityModel connectivityModel, AppUserModel user, SyncingService syncingService)
     {
         _authUser = authUser;
+        _connectivityModel = connectivityModel;
+        _syncingService = syncingService;
+
         InitializeComponent();
 
         InitApp();
+
+        _connectivityModel.PropertyChanging += ConnectivityModel_PropertyChanging;
+    }
+
+    private void ConnectivityModel_PropertyChanging(object? sender, System.ComponentModel.PropertyChangingEventArgs e)
+    {
+        Task.Run(_syncingService.SyncAppUser);
+        Task.Run(_syncingService.SyncProjects);
     }
 
     protected override Window CreateWindow(IActivationState? activationState)
@@ -21,19 +35,28 @@ public partial class App : Application
 
     private void InitApp()
     {
-        _ = _authUser.SignIn();
+        if(_connectivityModel.DeviceIsOnline)
+        {
+            _ = _authUser.SignIn().ContinueWith(async (t) =>
+            {
+                await _connectivityModel.ConnectivityCheck();
+            });
+        }
     }
 
     protected override void OnSleep()
     {
         SetStatusBar();
         RequestedThemeChanged -= App_RequestedThemeChanged;
+        _connectivityModel.PropertyChanging -= ConnectivityModel_PropertyChanging;
     }
 
     protected override void OnResume()
     {
         SetStatusBar();
         RequestedThemeChanged += App_RequestedThemeChanged;
+        _ = _connectivityModel.ConnectivityCheck();
+        _connectivityModel.PropertyChanging += ConnectivityModel_PropertyChanging;
     }
 
     private void App_RequestedThemeChanged(object sender, AppThemeChangedEventArgs e)

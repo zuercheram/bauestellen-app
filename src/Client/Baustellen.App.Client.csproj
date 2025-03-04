@@ -19,6 +19,7 @@
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
 
 		<!-- Display name -->
 		<ApplicationTitle>THEIA App</ApplicationTitle>
@@ -46,7 +47,6 @@
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -64,7 +64,7 @@
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</EmbeddedResource>
 	</ItemGroup>
-	
+
 	<ItemGroup>
 		<PackageReference Include="AspireMaui.App" Version="0.7.130-beta" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="11.1.0" />
@@ -81,6 +81,7 @@
 		<PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.11.0" />
 		<PackageReference Include="Microsoft.Identity.Client" Version="4.68.0" />
 		<PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.68.0" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.6.0" />
 	</ItemGroup>
 
@@ -97,6 +98,15 @@
 	  <MauiXaml Update="Controls\ConnectivityView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\EditProjectPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Templates\RemoteProjectItemTemplate.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Templates\OfflineProjectItemTemplate.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\UserProfilePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -107,8 +117,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Converter\" />
-	  <Folder Include="DataLayer\" />
+	  <Compile Update="Views\Templates\RemoteProjectItemTemplate.xaml.cs">
+	    <DependentUpon>RemoteProjectItemTemplate.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 </Project>

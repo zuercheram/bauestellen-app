@@ -2,7 +2,10 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Runtime;
 using Baustellen.App.Client.Authentication.MSALClient;
+using Baustellen.App.Client.Platforms.Android;
+using Baustellen.App.Client.Services;
 using Microsoft.Identity.Client;
 
 namespace Baustellen.App.Client;
@@ -11,15 +14,18 @@ namespace Baustellen.App.Client;
 public class MainActivity : MauiAppCompatActivity
 {
     protected override void OnCreate(Bundle savedInstanceState)
-    {        
+    {
         PlatformConfig.Instance.RedirectUri = $"msal{PublicClientSingleton.Instance.MSALClientHelper.AzureAdConfig.ClientId}://auth";
         PlatformConfig.Instance.ParentWindow = this;
 
         // Initialize MSAL and platformConfig is set
         _ = Task.Run(async () => await PublicClientSingleton.Instance.MSALClientHelper.InitializePublicClientAppAsync()).Result;
 
+        Intent backgroundSync = new Intent(this, typeof(BackgroundService));
+        StartService(backgroundSync);
+
         base.OnCreate(savedInstanceState);
-        // configure platform specific params   
+        // configure platform specific params
     }
 
     protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)

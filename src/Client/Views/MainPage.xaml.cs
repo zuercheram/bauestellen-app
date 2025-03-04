@@ -9,5 +9,12 @@ public partial class MainPage
         BindingContext = viewModel;
         InitializeComponent();
     }
+
+    private void ContentPageBase_NavigatedTo(object sender, NavigatedToEventArgs e)
+    {
+        offlineProjectCollection.SelectedItem = null;
+        onlineProjectCollection.SelectedItem = null;
+        Task.Run(() => ((MainPageViewModel)BindingContext).ReloadAsync());
+    }
 }
 

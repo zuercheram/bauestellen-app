@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<controls:ContentViewBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:Baustellen.App.Client.Controls"
              xmlns:viewmodel="clr-namespace:Baustellen.App.Client.ViewModels"
-             x:Class="Baustellen.App.Client.Controls.ConnectivityView">
-    
-    <Grid RowDefinitions="Auto,*">
-        <Label Text="Easily detect connectivity state."
-               FontAttributes="Bold"
-               Margin="12" />
-    </Grid>
-</controls:ContentViewBase>
+             x:Class="Baustellen.App.Client.Controls.ConnectivityView"
+             x:DataType="viewmodel:ConnectivityViewModel">
+
+    <HorizontalStackLayout
+        HeightRequest="30"
+        Padding="15,3"
+        BackgroundColor="{StaticResource Secondary}">
+
+        <Image Source="cloud_icon.png" IsVisible="{Binding IsOnline}"></Image>
+        <Image Source="cloud_download_icon.png" IsVisible="{Binding IsUploading}"></Image>
+        <Image Source="cloud_upload_icon.png" IsVisible="{Binding IsDownloading}"></Image>
+        <Image Source="cloud_disconnect_icon.png" HorizontalOptions="End" IsVisible="{Binding IsOffline}"></Image>
+
+    </HorizontalStackLayout>
+</ContentView>

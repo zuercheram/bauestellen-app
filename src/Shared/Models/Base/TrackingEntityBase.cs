@@ -1,3 +1,5 @@
+using NodaTime;
+
 namespace Baustellen.App.Shared.Models.Base;
 
 public class TrackingEntityBase

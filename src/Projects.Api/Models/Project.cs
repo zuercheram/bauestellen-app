@@ -10,9 +10,9 @@ public class Project : TrackingEntityBase
     public string? ManagerName { get; set; }
     public string? ManagerEmail { get; set; }
     public DateTime Start { get; set; }
-    public DateTime Commissioning { get; set; }
-    public string CustomerLastName { get; set; }
-    public string CustomerFirstName { get; set; }
+    public DateTime? Commissioning { get; set; }
+    public string? CustomerLastName { get; set; }
+    public string? CustomerFirstName { get; set; }
     public string? CustomerStreet { get; set; }
     public string? CustomerHouseNumber { get; set; }
     public string? CustomerZip { get; set; }

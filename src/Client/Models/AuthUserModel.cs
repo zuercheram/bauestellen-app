@@ -12,6 +12,8 @@ public class AuthUserModel : ModelBase
 
     private const string _secStoreKey = "bauapp-app-role-sec-store-key";
 
+    private bool _isLoggingIn = false;
+
     public UserDto? AuthenticatedUser { get; set; }
     public IAccount? MsalAuthAccount { get; set; }
     public bool IsLoggedIn { get; set; }
@@ -23,13 +25,23 @@ public class AuthUserModel : ModelBase
 
     public async Task SignIn()
     {
-        await PublicClientSingleton.Instance.AcquireTokenSilentAsync().ContinueWith((t) =>
+        if (_isLoggingIn)
         {
-            return Task.CompletedTask;
-        });
-        MsalAuthAccount = PublicClientSingleton.Instance.MSALClientHelper.AuthResult.Account;
-        IsLoggedIn = MsalAuthAccount is not null;
-        AuthenticatedUser = await FetchAuthenticatedUserData();
+            return;
+        }
+        try
+        {
+            _isLoggingIn = true;
+            await PublicClientSingleton.Instance.AcquireTokenSilentAsync().ContinueWith((t) =>
+            {
+                return Task.CompletedTask;
+            });
+            MsalAuthAccount = PublicClientSingleton.Instance.MSALClientHelper.AuthResult.Account;
+            IsLoggedIn = MsalAuthAccount is not null;
+            AuthenticatedUser = await FetchAuthenticatedUserData();
+        }
+        catch (Exception ex) { }
+        finally { _isLoggingIn = false; }
     }
 
     public async Task SignOut()

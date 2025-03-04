@@ -1,33 +1,34 @@
-﻿namespace Baustellen.App.Client.ViewModels;
+﻿using Baustellen.App.Client.Models;
+
+namespace Baustellen.App.Client.ViewModels;
 
 public class ConnectivityViewModel : ViewModelBase
 {
-    public string NetworkAccess => Connectivity.NetworkAccess.ToString();
+    private readonly ConnectivityModel _connectivityModel;
 
-    public string ConnectionProfiles
+    public ConnectivityViewModel(ConnectivityModel model)
     {
-        get
-        {
-            var profiles = string.Empty;
-            foreach (var p in Connectivity.ConnectionProfiles)
-                profiles += "\n" + p.ToString();
-            return profiles;
-        }
+        _connectivityModel = model;
+        _connectivityModel.PropertyChanged += _connectivityModel_PropertyChanged;
     }
 
-    public void OnAppearing()
+    ~ConnectivityViewModel()
     {
-        Connectivity.ConnectivityChanged += OnConnectivityChanged;
+        _connectivityModel.PropertyChanged -= _connectivityModel_PropertyChanged;
     }
 
-    public void OnDisappearing()
+    private void _connectivityModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-        Connectivity.ConnectivityChanged -= OnConnectivityChanged;
+        OnPropertyChanged(nameof(IsOnline));
+        OnPropertyChanged(nameof(IsOffline));
+        OnPropertyChanged(nameof(IsUploading));
+        OnPropertyChanged(nameof(IsDownloading));
     }
 
-    void OnConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
-    {
-        OnPropertyChanged(nameof(ConnectionProfiles));
-        OnPropertyChanged(nameof(NetworkAccess));
-    }
+    public bool IsOnline { get => _connectivityModel.IsOnline; }
+
+    public bool IsOffline { get => !_connectivityModel.IsOnline; }
+
+    public bool IsUploading { get => _connectivityModel.IsUploading; }
+    public bool IsDownloading { get => _connectivityModel.IsDownloading; }
 }

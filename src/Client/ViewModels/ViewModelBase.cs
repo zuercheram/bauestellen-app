@@ -1,6 +1,6 @@
 ﻿namespace Baustellen.App.Client.ViewModels;
 
-public partial class ViewModelBase : ObservableObject
+public partial class ViewModelBase : ObservableObject, IQueryAttributable
 {
     private long _isBusy;
 

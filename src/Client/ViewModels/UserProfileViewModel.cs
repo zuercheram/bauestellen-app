@@ -6,9 +6,9 @@ using Baustellen.App.Client.Helper;
 
 namespace Baustellen.App.Client.ViewModels;
 
-public partial class UserProfileViewModel : ViewModelBase, IQueryAttributable
+public partial class UserProfileViewModel : ViewModelBase
 {
-    public string Title => AppInfo.Name;
+    public string AppTitle => AppInfo.Name;
     public string Version => AppInfo.VersionString;
     public string MoreInfoUrl => "https://aka.ms/maui";
     public string Message => "This app is written in XAML and C# with .NET MAUI.";
@@ -36,6 +36,11 @@ public partial class UserProfileViewModel : ViewModelBase, IQueryAttributable
         get { return _userModel.AuthenticatedUser?.Role.ToString() ?? string.Empty; }
     }
 
+    public string Title
+    {
+        get => $"{FirstName} {LastName}";
+    }
+
     public bool IsLoggedIn
     {
         get { return _userModel.IsLoggedIn; }
@@ -57,12 +62,11 @@ public partial class UserProfileViewModel : ViewModelBase, IQueryAttributable
 
     public override async Task InitializeAsync()
     {
-        if (_initialized)
+        if (_userModel.IsLoggedIn)
         {
             return;
         }
 
-        _initialized = true;
         await IsBusyFor(
             async () =>
             {
@@ -70,7 +74,7 @@ public partial class UserProfileViewModel : ViewModelBase, IQueryAttributable
                 {
                     await _userModel.SignIn();
                     RefreshProperties();
-                    await Navigation.NavigateToAsync(nameof(MainPage));
+                    await Navigation.NavigateToAsync($"///{nameof(MainPage)}");
                 }
             });
     }

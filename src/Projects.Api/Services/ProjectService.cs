@@ -10,41 +10,47 @@ public class ProjectService(ProjectsDbContext dbContext)
 {
     public async Task<RequestProjectViewDto> RequestProjects(RequestProjectsInputDto inputModel)
     {
+        var searchValues = inputModel.SearchTerm.ToLower().Split(" ");
+
         var projectResult = await dbContext.Projects
-            .Where(x =>
-                (
-                    x.Name.Contains(inputModel.SearchTerm, StringComparison.OrdinalIgnoreCase)
-                    || x.ManagerName.Contains(inputModel.SearchTerm, StringComparison.OrdinalIgnoreCase)
-                    || x.RefNumber.Contains(inputModel.SearchTerm, StringComparison.OrdinalIgnoreCase)
-                )
-                &&
-                !inputModel.ExcludeIds.Any(id => id.Equals(x.Id))
-            )
+            .Include(x => x.ExternalLinks)
+            .Where(x => !inputModel.ExcludeIds.Any(id => id.Equals(x.Id)))
             .Skip(inputModel.PageOffset)
             .Take(inputModel.PageCount)
-            .Select(x => CopyToDto(x))
             .ToListAsync();
 
         return new RequestProjectViewDto
         {
             PageSize = projectResult.Count,
-            Projects = projectResult,
+            Projects = projectResult.Select(CopyToDto).ToList(),
         };
     }
 
     public async Task<SyncProjectsViewDto> SyncProjects(ProjectSyncInputDto projectSyncInputModel)
     {
-        var newBackendProjects = await dbContext.Projects
-            .Where(x =>
-                !projectSyncInputModel.SyncIdTimestamps.ContainsKey(x.Id)
-                || projectSyncInputModel.SyncIdTimestamps.Any(s => s.Key == x.Id && s.Value < x.ModifiedAt.Ticks)
-            )
-            .ToListAsync();
+        var updatedBackendProjects = new List<Project>();
+        var oudatedBackendProjects = new List<Guid>();
 
-        var outdatedBackendProjectIds = await dbContext.Projects
-            .Where(x => projectSyncInputModel.SyncIdTimestamps.Any(s => s.Key == x.Id && s.Value > x.ModifiedAt.Ticks))
-            .Select(x => x.Id)
-            .ToListAsync();
+        foreach (var timestamp in projectSyncInputModel.SyncIdTimestamps)
+        {
+            var utcTimestamp = DateTime.SpecifyKind(timestamp.Value, DateTimeKind.Utc);
+
+            var newerProject = await dbContext.Projects
+                .Include(x => x.ExternalLinks)
+                .FirstOrDefaultAsync(x => x.Id == timestamp.Key && x.ModifiedAt > utcTimestamp);
+            if (newerProject != null)
+            {
+                updatedBackendProjects.Add(newerProject);
+            }
+
+            var outdatedProject = await dbContext.Projects
+                .Include(x => x.ExternalLinks)
+                .FirstOrDefaultAsync(x => x.Id == timestamp.Key && x.ModifiedAt < utcTimestamp);
+            if (outdatedProject != null)
+            {
+                oudatedBackendProjects.Add(outdatedProject.Id);
+            }
+        }
 
         var projectIds = await dbContext.Projects.Select(x => x.Id).ToListAsync();
 
@@ -55,33 +61,59 @@ public class ProjectService(ProjectsDbContext dbContext)
 
         var viewModel = new SyncProjectsViewDto
         {
-            NewProjects = newBackendProjects.Select(x => CopyToDto(x)).ToList(),
-            OutdatedProjects = outdatedBackendProjectIds
+            NewProjects = updatedBackendProjects.Select(x => CopyToDto(x)).ToList(),
+            OutdatedProjects = oudatedBackendProjects
         };
 
         newFrontendProjects.ForEach(x => viewModel.OutdatedProjects.Add(x));
         return viewModel;
     }
 
-    public async Task UpdateProjects(ProjectUpdateInputDto projectUpdateInputModel)
+    public async Task<List<ProjectViewDto>> UpdateProjects(ProjectUpdateInputDto projectUpdateInputModel)
     {
+        var updatedProjects = new List<Project>();
         foreach (var project in projectUpdateInputModel.UpdateProjects)
         {
-            await UpdateOrCreateProject(project.Key, project.Value);
+            updatedProjects.Add(await UpdateOrCreateProject(project.Key, project.Value));
         }
         await dbContext.SaveChangesAsync();
+        return updatedProjects.Select(CopyToDto).ToList();
     }
 
-    private async Task UpdateOrCreateProject(Guid id, ProjectInputDto projectInputModel)
+    private async Task<Project> UpdateOrCreateProject(Guid id, ProjectInputDto projectInputModel)
     {
-        var project = await dbContext.Projects.FindAsync(id);
+        var project = await dbContext.Projects.Include(x => x.ExternalLinks).FirstOrDefaultAsync(x => x.Id == id);
         if (project == null)
         {
             project = new Project { Id = id };
             dbContext.Projects.Add(project);
         }
         CopyToProject(ref project, projectInputModel);
-        project.ExternalLinks = ProcessExternalLinks(projectInputModel.ExternalLinks, project);
+        UpdateLinks(projectInputModel.ExternalLinks, project.ExternalLinks, project);
+        return project;
+    }
+
+    private void UpdateLinks(IList<ExternalLinkInputDto> inputs, IList<ExternalLinks> links, Project project)
+    {
+        foreach(var inputLink in inputs)
+        {
+            var entity = links.FirstOrDefault(x => x.Id == inputLink.Id);
+            if (entity == null)
+            {
+                entity = new ExternalLinks { Id = inputLink.Id };
+                dbContext.ExternalLinks.Add(entity);
+            }
+            CopyToExternalLink(ref entity, inputLink, project);
+        }
+        var removeables = links.Where(x => !inputs.Any(a => a.Id == x.Id));
+        dbContext.ExternalLinks.RemoveRange(removeables);
+    }
+
+    private void CopyToExternalLink(ref ExternalLinks target, ExternalLinkInputDto linkInputModel, Project project)
+    {
+        target.Project = project;
+        target.Link = linkInputModel.Link;
+        target.Type = linkInputModel.LinkType;
     }
 
     private void CopyToProject(ref Project target, ProjectInputDto source)
@@ -90,8 +122,8 @@ public class ProjectService(ProjectsDbContext dbContext)
         target.RefNumber = source.RefNumber;
         target.ManagerName = source.ManagerName;
         target.ManagerEmail = source.ManagerEmail;
-        target.Start = source.Start;
-        target.Commissioning = source.Commissioning;
+        target.Start = DateTime.SpecifyKind(source.Start, DateTimeKind.Utc);
+        target.Commissioning = source.Commissioning.HasValue ? DateTime.SpecifyKind(source.Commissioning.Value, DateTimeKind.Utc) : null ;
         target.CustomerCity = source.CustomerCity;
         target.CustomerLastName = source.CustomerLastName;
         target.CustomerFirstName = source.CustomerFirstName;
@@ -134,42 +166,8 @@ public class ProjectService(ProjectsDbContext dbContext)
             ObjectStreet = project.ObjectStreet,
             RefNumber = project.RefNumber,
             Start = project.Start,
+            ModifiedAt = project.ModifiedAt,
             ExternalLinks = project.ExternalLinks.Select(x => new ExternalLinkViewDto { Id = x.Id, Link = x.Link, Type = x.Type }).ToList()
         };
-    }
-
-    private List<ExternalLinks> ProcessExternalLinks(IList<string> externalLinks, Project project)
-    {
-        return externalLinks.Select(x =>
-        {
-            var url = new Uri(x);
-            if (url.Host.Contains("teams.microsoft.com"))
-            {
-                return new ExternalLinks
-                {
-                    Link = x,
-                    Type = Shared.Models.LinkTypeEnum.MsTeams,
-                    Project = project
-                };
-            }
-            else if (url.Host.Contains("sharepoint.com"))
-            {
-                return new ExternalLinks
-                {
-                    Link = x,
-                    Type = Shared.Models.LinkTypeEnum.MsSharepoint,
-                    Project = project
-                };
-            }
-            else
-            {
-                return new ExternalLinks
-                {
-                    Link = x,
-                    Type = Shared.Models.LinkTypeEnum.Document,
-                    Project = project
-                };
-            }
-        }).ToList();
     }
 }

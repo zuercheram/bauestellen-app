@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<SwipeView
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Baustellen.App.Client.Views.Templates.OfflineProjectItemTemplate"
+    xmlns:viewmodel="clr-namespace:Baustellen.App.Client.ViewModels"
+    xmlns:model="clr-namespace:Baustellen.App.Client.Data.Entities"
+    x:DataType="model:Project">
+
+    <SwipeView.Resources>
+        <Style TargetType="StackLayout">
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="BackgroundColor" Value="{StaticResource Gray100}"/>
+        </Style>
+    </SwipeView.Resources>
+
+    <SwipeView.RightItems>
+        <SwipeItems>
+            <SwipeItem
+                BackgroundColor="{StaticResource Gray200}"
+                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=RemoveOfflineProjectCommand, x:DataType=viewmodel:MainPageViewModel}"
+                CommandParameter="{Binding}"
+                IconImageSource="cloud_icon.png"/>
+        </SwipeItems>
+    </SwipeView.RightItems>
+    <StackLayout>
+        <Label Text="{Binding RefNumber}" FontAttributes="Bold" />
+        <Label Text="{Binding Name}" />
+    </StackLayout>
+</SwipeView>

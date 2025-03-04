@@ -6,7 +6,7 @@ namespace Baustellen.App.Projects.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Policy = "User.Read")]
+    [AllowAnonymous]
     public class AvailabilityController : ControllerBase
     {
         [HttpGet]

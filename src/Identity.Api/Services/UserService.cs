@@ -12,10 +12,10 @@ public class UserService(IdentityDbContext dbContext)
         return await dbContext.Users.MaxAsync(x => x.ModifiedAt);
     }
 
-    public async Task<IList<UserDto>> GetUsersAsync(long? timestamp)
+    public async Task<IList<UserDto>> GetUsersAsync(DateTime? timestamp)
     {
         var lastModified = await GetLastModificationAsync();
-        if (!timestamp.HasValue || timestamp >= lastModified.Ticks)
+        if (!timestamp.HasValue || timestamp >= lastModified)
         {
             return new List<UserDto>();
         }
@@ -49,7 +49,7 @@ public class UserService(IdentityDbContext dbContext)
         return await dbContext.Users.MaxAsync(x => x.ModifiedAt);
     }
 
-    private UserDto CopyToDto(User user)
+    private static UserDto CopyToDto(User user)
     {
         return new UserDto
         {
@@ -58,6 +58,7 @@ public class UserService(IdentityDbContext dbContext)
             LastName = user.LastName,
             PrincipalName = user.PrincipalName,
             Role = user.Role,
+            ModifiedAt = user.ModifiedAt,
         };
     }
 }

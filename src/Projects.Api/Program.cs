@@ -1,4 +1,5 @@
 using Baustellen.App.Projects.Api.Data;
+using Baustellen.App.Projects.Api.Data.Seeding;
 using Baustellen.App.Projects.Api.Extensions;
 using Baustellen.App.ServiceDefaults;
 using Baustellen.App.Shared.Constants;
@@ -26,7 +27,7 @@ builder.Services.AddAuthorization(options =>
 
 // Add database
 builder.AddNpgsqlDbContext<ProjectsDbContext>(AppConstants.PostgresProjectDatabaseName);
-builder.Services.AddMigration<ProjectsDbContext>();
+builder.Services.AddMigration<ProjectsDbContext, ProjectDbSeeding>();
 builder.AddServiceDefaults();
 
 var app = builder.Build();

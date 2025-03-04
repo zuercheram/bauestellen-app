@@ -15,4 +15,6 @@ public static class AppConstants
 
     // Maui App Constants
     public const string ClientAutoSignInRoute = "auto-sign-in";
+    public const string ProjecEditEntity = "project-to-edit";
+    public const string IsRemoteProjectEdit = "project-air-state";
 }

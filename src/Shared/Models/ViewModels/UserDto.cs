@@ -9,4 +9,5 @@ public class UserDto
     public AppRoleEnum Role { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
+    public DateTime ModifiedAt { get; set; }
 }

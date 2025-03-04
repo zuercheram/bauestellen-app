@@ -1,5 +1,8 @@
-﻿using Baustellen.App.Client.Models;
+﻿using Baustellen.App.Client.Data.Repositories;
+using Baustellen.App.Client.Helper;
+using Baustellen.App.Client.Models;
 using Baustellen.App.Client.Services;
+using Baustellen.App.Client.Services.Base;
 using Baustellen.App.Client.ViewModels;
 using Baustellen.App.Client.Views;
 using CommunityToolkit.Maui;
@@ -36,6 +39,7 @@ public static class MauiProgram
             .RegisterAppServices()
             .RegisterModelViews()
             .RegisterModel()
+            .RegisterRepositories()
             .RegisterPages();
 
         RegisterSettings();
@@ -63,16 +67,27 @@ public static class MauiProgram
         return mauiAppBuilder;
     }
 
+    public static MauiAppBuilder RegisterRepositories(this MauiAppBuilder builder)
+    {
+        var dbPath = FileAccessHelper.GetLocalFilePath("theiabaustelle.db3");
+        builder.Services.AddSingleton(s => ActivatorUtilities.CreateInstance<ExternalLinkRepository>(s, dbPath));
+        builder.Services.AddSingleton(s => ActivatorUtilities.CreateInstance<ProjectRepository>(s, dbPath));
+        builder.Services.AddSingleton(s => ActivatorUtilities.CreateInstance<AppUserRepository>(s, dbPath));
+        return builder;
+    }
+
     public static MauiAppBuilder RegisterAppServices(this MauiAppBuilder builder)
     {
-        builder.Services.AddSingleton<AppConnectivityService>();
+        builder.Services.AddSingleton<BackendStateService>();
+        builder.Services.AddSingleton<SyncingService>();
         builder.Services.AddSingleton<UserService>();
+        builder.Services.AddSingleton<ProjectService>();
         builder.Services.AddSingleton(sp =>
         {
             var debugHandler = sp.GetKeyedService<HttpMessageHandler>("DebugHttpMessageHandler");
             return new RequestProvider(debugHandler!);
         });
-        builder.Services.AddSingleton<BackendStateModel>();
+        builder.Services.AddSingleton<ConnectivityModel>();
 
 #if DEBUG
         builder.Services.AddKeyedSingleton<HttpMessageHandler>(
@@ -83,7 +98,7 @@ public static class MauiProgram
                 var handler = new Xamarin.Android.Net.AndroidMessageHandler();
                 handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) =>
                 {
-                    if (cert != null && (cert.Issuer.Equals("CN=localhost", StringComparison.OrdinalIgnoreCase) || cert.Issuer.Equals("CN=TRAEFIK DEFAULT CERT", StringComparison.OrdinalIgnoreCase) || errors == SslPolicyErrors.None))
+                    if (cert != null && (cert.Issuer.Equals("CN=localhost", StringComparison.OrdinalIgnoreCase) || cert.Issuer.Equals("CN=TRAEFIK DEFAULT CERT", StringComparison.OrdinalIgnoreCase) || errors == System.Net.Security.SslPolicyErrors.None))
                     {
                         return true;
                     }
@@ -112,13 +127,18 @@ public static class MauiProgram
     {
         builder.Services.AddSingleton<MainPageViewModel>();
         builder.Services.AddSingleton<UserProfileViewModel>();
+        builder.Services.AddSingleton<ConnectivityViewModel>();
+        builder.Services.AddSingleton<EditProjectViewModel>();
         return builder;
     }
 
     public static MauiAppBuilder RegisterModel(this MauiAppBuilder builder)
     {
-        builder.Services.AddSingleton<BackendStateModel>();
+        builder.Services.AddSingleton<ConnectivityModel>();
         builder.Services.AddSingleton<AuthUserModel>();
+        builder.Services.AddSingleton<ProjectModel>();
+        builder.Services.AddSingleton<EditProjectModel>();
+        builder.Services.AddSingleton<AppUserModel>();
         return builder;
     }
 
@@ -126,6 +146,7 @@ public static class MauiProgram
     {
         builder.Services.AddTransient<MainPage>();
         builder.Services.AddTransient<UserProfilePage>();
+        builder.Services.AddTransient<EditProjectPage>();
         return builder;
     }
 
