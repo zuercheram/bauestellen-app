@@ -5,7 +5,7 @@ namespace Baustellen.App.Client;
 public class AppSettings
 {
     private const string IdGatewayEndpoint = "DownStreamApiHost";
-    private const string IdIsLocalSetting = "IsLocal";    
+    private const string IdIsLocalSetting = "IsLocal";
 
     public static void SetPreferenc(string key, string value)
     {
@@ -33,6 +33,4 @@ public class AppSettings
         get => Preferences.Get(IdIsLocalSetting, true);
         set => Preferences.Set(IdIsLocalSetting, value);
     }
-    
-
 }

@@ -2,7 +2,7 @@
 using Baustellen.App.Client.Extensions;
 using Baustellen.App.Client.Models;
 using Baustellen.App.Shared.Constants;
-using NodaTime;
+using Microsoft.Extensions.Logging;
 using System.ComponentModel;
 
 namespace Baustellen.App.Client.ViewModels;
@@ -201,6 +201,8 @@ public partial class EditProjectViewModel : ViewModelBase
         _model.PropertyChanged += Model_PropertyChanged;
         _appUserModel.PropertyChanging += AppUserModel_PropertyChanging;
     }
+
+
 
     ~EditProjectViewModel()
     {

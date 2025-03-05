@@ -48,7 +48,7 @@ public  class SyncingService
         {
             return;
         }
-        _timer = new System.Timers.Timer(120000);
+        _timer = new System.Timers.Timer(3600000);
         _timer.Elapsed += async (sender, e) =>
         {
             await SyncProjects();

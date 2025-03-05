@@ -13,6 +13,7 @@ public class ProjectModel : ModelBase
     private readonly ProjectRepository _projectRepository;
     private readonly ExternalLinkRepository _externalLinkRepository;
     private readonly ProjectService _projectService;
+
     private bool _isProjectFetching = false;
 
     private readonly ObservableCollectionEx<Project> _remoteProjects = new ObservableCollectionEx<Project>();
@@ -120,7 +121,11 @@ public class ProjectModel : ModelBase
             || e.PropertyName == nameof(PageOffset)
             || e.PropertyName == nameof(PageSize))
         {
-            _ = FetchOnlineProjectsAsync();
+            _connectivity.IsBusy = true;
+            Task.Run(FetchOnlineProjectsAsync).ContinueWith((t) =>
+            {
+                _connectivity.IsBusy = false;
+            });
         }
     }
 }

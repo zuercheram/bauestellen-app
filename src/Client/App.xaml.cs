@@ -1,5 +1,7 @@
-﻿using Baustellen.App.Client.Models;
+﻿using Baustellen.App.Client.Helper;
+using Baustellen.App.Client.Models;
 using Baustellen.App.Client.Services;
+
 namespace Baustellen.App.Client;
 
 public partial class App : Application
@@ -18,13 +20,16 @@ public partial class App : Application
 
         InitApp();
 
-        _connectivityModel.PropertyChanging += ConnectivityModel_PropertyChanging;
+        _connectivityModel.ConnectivityStateChanged += ConnectivityModel_ConnectivityStateChanged;
     }
 
-    private void ConnectivityModel_PropertyChanging(object? sender, System.ComponentModel.PropertyChangingEventArgs e)
+    private void ConnectivityModel_ConnectivityStateChanged(object? sender, ConnectivityStateEventArgs e)
     {
-        Task.Run(_syncingService.SyncAppUser);
-        Task.Run(_syncingService.SyncProjects);
+        if (e.IsOnline)
+        {
+            Task.Run(_syncingService.SyncAppUser);
+            Task.Run(_syncingService.SyncProjects);
+        }
     }
 
     protected override Window CreateWindow(IActivationState? activationState)
@@ -39,43 +44,12 @@ public partial class App : Application
 
     protected override void OnSleep()
     {
-        SetStatusBar();
-        RequestedThemeChanged -= App_RequestedThemeChanged;
-        _connectivityModel.PropertyChanging -= ConnectivityModel_PropertyChanging;
+        _connectivityModel.ConnectivityStateChanged -= ConnectivityModel_ConnectivityStateChanged;
     }
 
     protected override void OnResume()
     {
-        SetStatusBar();
-        RequestedThemeChanged += App_RequestedThemeChanged;
         _ = _connectivityModel.ConnectivityCheck();
-        _connectivityModel.PropertyChanging += ConnectivityModel_PropertyChanging;
-    }
-
-    private void App_RequestedThemeChanged(object sender, AppThemeChangedEventArgs e)
-    {
-        Dispatcher.Dispatch(() => SetStatusBar());
-    }
-
-    private void SetStatusBar()
-    {
-        var nav = Windows[0].Page as NavigationPage;
-
-        if (Current.RequestedTheme == AppTheme.Dark)
-        {
-            if (nav != null)
-            {
-                nav.BarBackgroundColor = Colors.Black;
-                nav.BarTextColor = Colors.White;
-            }
-        }
-        else
-        {
-            if (nav != null)
-            {
-                nav.BarBackgroundColor = Colors.White;
-                nav.BarTextColor = Colors.Black;
-            }
-        }
+        _connectivityModel.ConnectivityStateChanged += ConnectivityModel_ConnectivityStateChanged;
     }
 }
