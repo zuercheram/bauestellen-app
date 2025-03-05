@@ -1,6 +1,0 @@
-@Baustellen.App.Blob.Api_HostAddress = http://localhost:5255
-
-GET {{Baustellen.App.Blob.Api_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

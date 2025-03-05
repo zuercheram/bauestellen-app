@@ -1,7 +1,7 @@
 ﻿using Baustellen.App.Client.Helper;
 using Baustellen.App.Client.Services.Base;
-using Baustellen.App.Shared.Models.ViewModels;
 
+using Baustellen.App.Shared.Models.ViewModels;
 namespace Baustellen.App.Client.Services;
 
 public class BackendStateService(RequestProvider requestProvider) : ApiServiceBase
