@@ -16,9 +16,6 @@ public  class SyncingService
 
     private bool _projectIsSyncing = false;
     private bool _userIsSyncing = false;
-    private bool _timerStarted = false;
-
-    private System.Timers.Timer _timer;
 
     public SyncingService(
         AppUserRepository appUserRepository,
@@ -41,29 +38,6 @@ public  class SyncingService
     public event EventHandler ProjectSynced;
     public event EventHandler UserSyncing;
     public event EventHandler UserSynced;
-
-    public void Start()
-    {
-        if (_timerStarted)
-        {
-            return;
-        }
-        _timer = new System.Timers.Timer(3600000);
-        _timer.Elapsed += async (sender, e) =>
-        {
-            await SyncProjects();
-            await SyncAppUser();
-        };
-        _timer.Start();
-        _timerStarted = true;
-    }
-
-    public void Stop()
-    {
-        _timer.Stop();
-        _timer.Dispose();
-        _timerStarted = false;
-    }
 
     public async Task SyncProjects()
     {

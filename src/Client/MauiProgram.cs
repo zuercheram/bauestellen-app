@@ -7,8 +7,6 @@ using Baustellen.App.Client.ViewModels;
 using Baustellen.App.Client.Views;
 using CommunityToolkit.Maui;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System.Net.Security;
 using System.Reflection;
 

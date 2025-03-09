@@ -14,8 +14,6 @@ public partial class MainPageViewModel : ViewModelBase
     private readonly AuthUserModel _authUser;
     private readonly SyncingService _syncingService;
 
-    private bool _initialized;
-
     public IReadOnlyList<Project> OnlineProjects { get => _projectModel.RemoteProjects; }
     public IReadOnlyList<Project> OfflineProjects { get => _projectModel.OfflineProjects; }
 
@@ -65,7 +63,7 @@ public partial class MainPageViewModel : ViewModelBase
             {
                 { AppConstants.ClientAutoSignInRoute, true }
             };
-            await Navigation.NavigateToAsync(nameof(UserProfilePage), navigationParameter);
+            await Navigation.NavigateToAsync($"//{nameof(UserProfilePage)}", navigationParameter);
         }
     }
 

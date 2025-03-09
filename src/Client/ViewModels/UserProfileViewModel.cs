@@ -1,8 +1,6 @@
 ﻿using Baustellen.App.Client.Extensions;
 using Baustellen.App.Client.Models;
-using Baustellen.App.Client.Views;
 using Baustellen.App.Shared.Constants;
-using Baustellen.App.Client.Helper;
 
 namespace Baustellen.App.Client.ViewModels;
 
@@ -14,7 +12,6 @@ public partial class UserProfileViewModel : ViewModelBase
     public string Message => "This app is written in XAML and C# with .NET MAUI.";
 
     private readonly AuthUserModel _userModel;
-    private bool _initialized;
 
     public string FirstName
     {
@@ -58,25 +55,6 @@ public partial class UserProfileViewModel : ViewModelBase
     public UserProfileViewModel(AuthUserModel userModel, ConnectivityModel connectivityModel) : base(connectivityModel)
     {
         _userModel = userModel;
-    }
-
-    public override async Task InitializeAsync()
-    {
-        if (_userModel.IsLoggedIn)
-        {
-            return;
-        }
-
-        await IsBusyFor(
-            async () =>
-            {
-                if (IsRoutedToForSignIn)
-                {
-                    await _userModel.SignIn();
-                    RefreshProperties();
-                    await Navigation.NavigateToAsync($"///{nameof(MainPage)}");
-                }
-            });
     }
 
     public override void ApplyQueryAttributes(IDictionary<string, object> query)

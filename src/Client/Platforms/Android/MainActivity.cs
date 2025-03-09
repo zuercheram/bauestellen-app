@@ -3,7 +3,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Baustellen.App.Client.Authentication.MSALClient;
-using Baustellen.App.Client.Platforms.Android;
 using Microsoft.Identity.Client;
 
 namespace Baustellen.App.Client;
@@ -18,9 +17,6 @@ public class MainActivity : MauiAppCompatActivity
 
         // Initialize MSAL and platformConfig is set
         _ = Task.Run(async () => await PublicClientSingleton.Instance.MSALClientHelper.InitializePublicClientAppAsync()).Result;
-
-        Intent backgroundSync = new Intent(this, typeof(BackgroundService));
-        StartService(backgroundSync);
 
         base.OnCreate(savedInstanceState);
         // configure platform specific params

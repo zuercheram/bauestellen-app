@@ -1,5 +1,4 @@
 ﻿using Baustellen.App.Client.Authentication.MSALClient;
-using Baustellen.App.Client.Services;
 using Foundation;
 using Microsoft.Identity.Client;
 using UIKit;
@@ -9,8 +8,6 @@ namespace Baustellen.App.Client;
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate
 {
-    private SyncingService _syncingService;
-
     protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
     public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
     {
@@ -19,9 +16,6 @@ public class AppDelegate : MauiUIApplicationDelegate
 
         // Initialize MSAL and platformConfig is set
         IAccount existinguser = Task.Run(async () => await PublicClientSingleton.Instance.MSALClientHelper.InitializePublicClientAppAsync()).Result;
-
-        _syncingService = IPlatformApplication.Current!.Services.GetRequiredService<SyncingService>();
-        _syncingService.Start();
 
         return base.FinishedLaunching(application, launchOptions);
     }
@@ -42,15 +36,5 @@ public class AppDelegate : MauiUIApplicationDelegate
         }
 
         return true;
-    }
-
-    public override void DidEnterBackground(UIApplication application)
-    {
-        _syncingService.Stop();
-    }
-
-    public override void WillEnterForeground(UIApplication application)
-    {
-        _syncingService.Start();
     }
 }
