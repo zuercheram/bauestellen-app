@@ -31,7 +31,7 @@ public class EditProjectModel : ModelBase
     private string _objectCity = string.Empty;
     private string _objectZip = string.Empty;
     private string _objectNumber = string.Empty;
-    private DateTime _start = DateTime.UtcNow;
+    private DateTime? _start = DateTime.UtcNow;
     private DateTime? _commissioning;
 
     public bool IsOnlineProject
@@ -136,7 +136,7 @@ public class EditProjectModel : ModelBase
         set => SetProperty(ref _objectCity, value);
     }
 
-    public DateTime Start
+    public DateTime? Start
     {
         get => _start;
         set => SetProperty(ref _start, value);

@@ -34,11 +34,7 @@
             <StackLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=ViewProjectCommand, x:DataType=viewmodel:MainPageViewModel}" CommandParameter="{Binding .}"></TapGestureRecognizer>
             </StackLayout.GestureRecognizers>
-            <HorizontalStackLayout>
-                <Label Text="{Binding RefNumber}" FontAttributes="Bold" />
-                <Label Text=" - " />
-                <Label Text="{Binding Name}" />
-            </HorizontalStackLayout>
-            <Label Text="{Binding ManagerEmail}" />
+            <Label Text="{Binding Name}" FontAttributes="Bold" />
+            <Label Text="{Binding Address}" />
         </StackLayout>
 </SwipeView>

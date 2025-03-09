@@ -15,7 +15,7 @@ public class Project
     public string RefNumber { get; set; }
     public string? ManagerName { get; set; }
     public string? ManagerEmail { get; set; }
-    public DateTime Start { get; set; }
+    public DateTime? Start { get; set; }
     public DateTime? Commissioning { get; set; }
     public string? CustomerLastName { get; set; }
     public string? CustomerFirstName { get; set; }
@@ -32,6 +32,8 @@ public class Project
     public DateTime ModifiedAt { get; set; }
     [Ignore]
     public IList<ExternalLink> ExternalLinks { get; set; } = new List<ExternalLink>();
+    [Ignore]
+    public string Address => $"{ObjectStreet} {ObjectNumber}, {ObjectCity} {ObjectZip}";
 
     public static Project CopyToProject(ProjectViewDto source)
     {
@@ -81,7 +83,7 @@ public class Project
             ObjectStreet = source.ObjectStreet,
             ObjectZip = source.ObjectZip,
             RefNumber = source.RefNumber,
-            Start = source.Start,
+            Start = source.Start ?? DateTime.UtcNow,
             ExternalLinks = source.ExternalLinks.Select(x => ExternalLink.CopyToInputExternalLink(x)).ToList()
         };
     }

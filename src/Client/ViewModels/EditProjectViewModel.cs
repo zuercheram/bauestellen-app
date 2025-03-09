@@ -143,18 +143,18 @@ public partial class EditProjectViewModel : ViewModelBase
         });
     }
 
-    public DateTime Start
+    public DateTime? Start
     {
-        get => _model.Start;
+        get => _model.Start ?? DateTime.UtcNow;
         set => SetProperty(_model.Start, value, (value) =>
         {
-            _model.Start = value;
+            if (value.HasValue) { _model.Start = value.Value; }
         });
     }
 
     public DateTime? Commissioning
     {
-        get => _model.Commissioning;
+        get => _model.Commissioning ?? DateTime.UtcNow;
         set => SetProperty(_model.Commissioning, value, (value) =>
         {
             _model.Commissioning = value;

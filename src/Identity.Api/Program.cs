@@ -1,3 +1,5 @@
+using Azure.Core;
+using Azure.Identity;
 using Baustellen.App.Identity.Api.Data;
 using Baustellen.App.Identity.Api.Data.Seeding;
 using Baustellen.App.Identity.Api.Services;
@@ -6,12 +8,35 @@ using Baustellen.App.Shared.Constants;
 using Baustellen.App.Shared.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
+using Npgsql;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddNpgsqlDbContext<IdentityDbContext>(AppConstants.PostgresIdentityDatabaseName);
+var datasourceBuilder = new NpgsqlDataSourceBuilder(builder.Configuration.GetConnectionString(AppConstants.PostgresIdentityDatabaseName));
+if (string.IsNullOrEmpty(datasourceBuilder.ConnectionStringBuilder.Password))
+{
+    datasourceBuilder.UsePeriodicPasswordProvider(async (_, ct) =>
+    {
+        var credentials = new DefaultAzureCredential();
+        var token = await credentials.GetTokenAsync(
+            new TokenRequestContext([
+                "https://ossrdbms-aad.database.windows.net/.default"
+            ]), ct);
+
+        return token.Token;
+    },
+        TimeSpan.FromHours(24),
+        TimeSpan.FromSeconds(10)
+    );
+}
+
+builder.Services.AddDbContext<IdentityDbContext>(options =>
+{
+    options.UseNpgsql(datasourceBuilder.Build());
+});
 builder.Services.AddMigration<IdentityDbContext, IdentityDbSeeding>();
 builder.Services.AddTransient<UserService>();
 builder.AddServiceDefaults();

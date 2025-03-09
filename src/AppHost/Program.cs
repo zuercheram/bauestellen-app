@@ -6,9 +6,8 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 builder.AddForwardedHeaders();
 
-var postgres = builder.AddPostgres(AppConstants.PostgresServerName)
-        .WithDataVolume(AppConstants.PostgresDataVolumeName, isReadOnly: false)
-        .WithPgAdmin();
+var postgres = builder.AddAzurePostgresFlexibleServer(AppConstants.PostgresServerName)
+    .RunAsContainer();
 
 var projectDb = postgres.AddDatabase(AppConstants.PostgresProjectDatabaseName);
 var identityDb = postgres.AddDatabase(AppConstants.PostgresIdentityDatabaseName);
