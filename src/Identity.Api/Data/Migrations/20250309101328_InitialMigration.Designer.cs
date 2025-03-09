@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Baustellen.App.Identity.Api.Data.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
-    [Migration("20250303195947_InitialMigrations")]
-    partial class InitialMigrations
+    [Migration("20250309101328_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,8 +36,9 @@ namespace Baustellen.App.Identity.Api.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("CreatedByOid")
-                        .HasColumnType("integer");
+                    b.Property<string>("CreatedByOid")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -53,8 +54,9 @@ namespace Baustellen.App.Identity.Api.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("ModifiedByOid")
-                        .HasColumnType("integer");
+                    b.Property<string>("ModifiedByOid")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("PrincipalName")
                         .IsRequired()

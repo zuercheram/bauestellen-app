@@ -2,7 +2,6 @@
 using Baustellen.App.Client.Extensions;
 using Baustellen.App.Client.Models;
 using Baustellen.App.Shared.Constants;
-using Microsoft.Extensions.Logging;
 using System.ComponentModel;
 
 namespace Baustellen.App.Client.ViewModels;
@@ -162,24 +161,6 @@ public partial class EditProjectViewModel : ViewModelBase
         });
     }
 
-    public string Lon
-    {
-        get => _model.Lon;
-        set => SetProperty(_model.Lon, value, (value) =>
-        {
-            _model.Lon = value;
-        });
-    }
-
-    public string Lat
-    {
-        get => _model.Lat;
-        set => SetProperty(_model.Lat, value, (value) =>
-        {
-            _model.Lat = value;
-        });
-    }
-
     public IReadOnlyList<AppUser> ProjectLeads => _appUserModel.ProjectManagers;
 
     public AppUser? SelectedProjectLead
@@ -257,8 +238,6 @@ public partial class EditProjectViewModel : ViewModelBase
         OnPropertyChanged(nameof(ObjectNumber));
         OnPropertyChanged(nameof(ObjectZip));
         OnPropertyChanged(nameof(ObjectCity));
-        OnPropertyChanged(nameof(Lat));
-        OnPropertyChanged(nameof(Lon));
     }
 
     private void AppUserModel_PropertyChanging(object? sender, System.ComponentModel.PropertyChangingEventArgs e)

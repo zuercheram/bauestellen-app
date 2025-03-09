@@ -17,6 +17,10 @@ public class ConnectivityViewModel : ViewModelBase
 
     public bool IsBusy => ConnectivityModel.IsBusy;
 
+    public bool IsOnline { get => ConnectivityModel.IsOnline; }
+
+    public bool IsOffline { get => !ConnectivityModel.IsOnline; }
+
     public ConnectivityViewModel(ConnectivityModel model, SyncingService syncingService) : base(model)
     {
         _syncingService = syncingService;
@@ -65,8 +69,4 @@ public class ConnectivityViewModel : ViewModelBase
         OnPropertyChanged(nameof(IsOnline));
         OnPropertyChanged(nameof(IsOffline));
     }
-
-    public bool IsOnline { get => ConnectivityModel.IsOnline; }
-
-    public bool IsOffline { get => !ConnectivityModel.IsOnline; }
 }

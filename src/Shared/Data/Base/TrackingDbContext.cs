@@ -1,4 +1,5 @@
-﻿using Baustellen.App.Shared.Models.Base;
+﻿using Baustellen.App.Shared.Helpers;
+using Baustellen.App.Shared.Models.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace Baustellen.App.Shared.Data.Base;
@@ -26,8 +27,8 @@ public class TrackingDbContext<T>: DbContext where T : DbContext
     }
 
     private void UpdateTrackingEntityProperties(bool isSystemUser = false)
-    {
-        var userId = isSystemUser ? 0 : 0; // TODO should be a real user oid in the future.
+    {        
+        var userId = isSystemUser ? "System" : UserContextHelper.GetCurrentPrincipal(); // TODO should be a real user oid in the future.
 
         var now = DateTime.UtcNow;
         var addedEntities = ChangeTracker.Entries().Where(x => x.State == EntityState.Added && x.Entity is TrackingEntityBase).Select(x => (TrackingEntityBase)x.Entity);

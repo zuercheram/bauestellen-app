@@ -1,4 +1,4 @@
-﻿using Baustellen.App.Client.Data.Entities;
+﻿ using Baustellen.App.Client.Data.Entities;
 using Baustellen.App.Client.Data.Repositories;
 using Baustellen.App.Client.Helper;
 using Baustellen.App.Client.Services;

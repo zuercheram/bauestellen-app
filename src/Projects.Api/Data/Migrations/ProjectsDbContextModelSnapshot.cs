@@ -57,8 +57,9 @@ namespace Baustellen.App.Projects.Api.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("CreatedByOid")
-                        .HasColumnType("integer");
+                    b.Property<string>("CreatedByOid")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("CustomerCity")
                         .HasColumnType("text");
@@ -84,12 +85,6 @@ namespace Baustellen.App.Projects.Api.Data.Migrations
                     b.Property<string>("CustomerZip")
                         .HasColumnType("text");
 
-                    b.Property<string>("Lat")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Lon")
-                        .HasColumnType("text");
-
                     b.Property<string>("ManagerEmail")
                         .HasColumnType("text");
 
@@ -100,8 +95,9 @@ namespace Baustellen.App.Projects.Api.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("ModifiedByOid")
-                        .HasColumnType("integer");
+                    b.Property<string>("ModifiedByOid")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");

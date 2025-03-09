@@ -24,7 +24,7 @@ public class AppSettings
 
     public static string GatewayEndpoint
     {
-        get => Preferences.Get(IdGatewayEndpoint, "localhost");
+        get => Preferences.Get(IdGatewayEndpoint, "https://localhost:7276");
         set => Preferences.Set(IdGatewayEndpoint, value);
     }
 

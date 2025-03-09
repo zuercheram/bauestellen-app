@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Baustellen.App.Projects.Api.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigrations : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,11 +34,9 @@ namespace Baustellen.App.Projects.Api.Data.Migrations
                     ObjectNumber = table.Column<string>(type: "text", nullable: true),
                     ObjectZip = table.Column<string>(type: "text", nullable: true),
                     ObjectCity = table.Column<string>(type: "text", nullable: true),
-                    Lon = table.Column<string>(type: "text", nullable: true),
-                    Lat = table.Column<string>(type: "text", nullable: true),
-                    CreatedByOid = table.Column<int>(type: "integer", nullable: false),
+                    CreatedByOid = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ModifiedByOid = table.Column<int>(type: "integer", nullable: false),
+                    ModifiedByOid = table.Column<string>(type: "text", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>

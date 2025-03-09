@@ -19,6 +19,11 @@ public partial class MainPageViewModel : ViewModelBase
     public IReadOnlyList<Project> OnlineProjects { get => _projectModel.RemoteProjects; }
     public IReadOnlyList<Project> OfflineProjects { get => _projectModel.OfflineProjects; }
 
+    public bool CanEdit => _authUser.CanEdit;
+    public bool CanAdd => _authUser.CanAdd;
+
+    public bool IsOnline { get => ConnectivityModel.IsOnline; }
+
     public MainPageViewModel(
         AuthUserModel authUser,
         ConnectivityModel connectivity,
@@ -34,23 +39,12 @@ public partial class MainPageViewModel : ViewModelBase
         _authUser.PropertyChanged += AuthUser_PropertyChanged;
     }
 
-    private void AuthUser_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        OnPropertyChanged(nameof(CanEdit));
-        OnPropertyChanged(nameof(CanAdd));
-    }
-
     ~MainPageViewModel()
     {
         ConnectivityModel.PropertyChanged -= ConnectivityModel_PropertyChanged;
         _projectModel.PropertyChanged -= OnProjectModelPropertyChanged;
         _authUser.PropertyChanged -= AuthUser_PropertyChanged;
     }
-
-    public bool CanEdit => _authUser.CanEdit;
-    public bool CanAdd => _authUser.CanAdd;
-
-    public bool IsOnline { get => ConnectivityModel.IsOnline; }
 
     public override async Task InitializeAsync()
     {
@@ -148,5 +142,11 @@ public partial class MainPageViewModel : ViewModelBase
     {
         OnPropertyChanged(nameof(OfflineProjects));
         OnPropertyChanged(nameof(OnlineProjects));
+    }
+
+    private void AuthUser_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(CanEdit));
+        OnPropertyChanged(nameof(CanAdd));
     }
 }

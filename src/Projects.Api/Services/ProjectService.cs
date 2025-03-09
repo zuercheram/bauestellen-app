@@ -137,8 +137,6 @@ public class ProjectService(ProjectsDbContext dbContext)
         target.ObjectNumber = source.ObjectNumber;
         target.ObjectZip = source.ObjectZip;
         target.ObjectCity = source.ObjectCity;
-        target.Lon = source.Lon;
-        target.Lat = source.Lat;
     }
 
     private ProjectViewDto CopyToDto(Project project)
@@ -156,8 +154,6 @@ public class ProjectService(ProjectsDbContext dbContext)
             CustomerStreet = project.CustomerStreet,
             CustomerTelefon = project.CustomerTelefon,
             CustomerZip = project.CustomerZip,
-            Lat = project.Lat,
-            Lon = project.Lon,
             ManagerEmail = project.ManagerEmail,
             ManagerName = project.ManagerName,
             ObjectCity = project.ObjectCity,

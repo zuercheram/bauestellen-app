@@ -23,7 +23,5 @@ public class Project : TrackingEntityBase
     public string? ObjectNumber { get; set; }
     public string? ObjectZip { get; set; }
     public string? ObjectCity { get; set; }
-    public string? Lon { get; set; }
-    public string? Lat { get; set; }
     public IList<ExternalLinks> ExternalLinks { get; set; } = new List<ExternalLinks>();
 }

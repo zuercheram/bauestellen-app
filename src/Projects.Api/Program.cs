@@ -6,6 +6,7 @@ using Baustellen.App.Shared.Constants;
 using Baustellen.App.Shared.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
+using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,7 @@ builder.Services.AddAuthorization(options =>
 
 // Add database
 builder.AddNpgsqlDbContext<ProjectsDbContext>(AppConstants.PostgresProjectDatabaseName);
+
 builder.Services.AddMigration<ProjectsDbContext, ProjectDbSeeding>();
 builder.AddServiceDefaults();
 

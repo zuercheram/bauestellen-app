@@ -29,8 +29,6 @@ public class Project
     public string? ObjectNumber { get; set; }
     public string? ObjectZip { get; set; }
     public string? ObjectCity { get; set; }
-    public string? Lon { get; set; }
-    public string? Lat { get; set; }
     public DateTime ModifiedAt { get; set; }
     [Ignore]
     public IList<ExternalLink> ExternalLinks { get; set; } = new List<ExternalLink>();
@@ -50,8 +48,6 @@ public class Project
             CustomerStreet = source.CustomerStreet,
             CustomerTelefon = source.CustomerTelefon,
             CustomerZip = source.CustomerZip,
-            Lat = source.Lat,
-            Lon = source.Lon,
             ManagerEmail = source.ManagerEmail,
             ManagerName = source.ManagerName,
             ObjectCity = source.ObjectCity,
@@ -78,8 +74,6 @@ public class Project
             CustomerStreet = source.CustomerStreet,
             CustomerTelefon = source.CustomerTelefon,
             CustomerZip = source.CustomerZip,
-            Lat = source.Lat,
-            Lon = source.Lon,
             ManagerEmail = source.ManagerEmail,
             ManagerName = source.ManagerName,
             ObjectCity = source.ObjectCity,

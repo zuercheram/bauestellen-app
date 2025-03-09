@@ -2,16 +2,13 @@
 using Baustellen.App.Client.Data.Repositories;
 using Baustellen.App.Client.Helper;
 using Baustellen.App.Client.Services;
-using Baustellen.App.Shared.Helpers;
 using Baustellen.App.Shared.Models.InputModel;
-using NodaTime;
 
 namespace Baustellen.App.Client.Models;
 
 public class EditProjectModel : ModelBase
 {
     private readonly ProjectRepository _projectRepository;
-    private readonly ExternalLinkRepository _externalLinkRepository;
     private readonly ProjectService _projectService;
     private readonly SyncingService _syncingService;
 
@@ -34,14 +31,8 @@ public class EditProjectModel : ModelBase
     private string _objectCity = string.Empty;
     private string _objectZip = string.Empty;
     private string _objectNumber = string.Empty;
-    private string _lat = string.Empty;
-    private string _lon = string.Empty;
     private DateTime _start = DateTime.UtcNow;
     private DateTime? _commissioning;
-
-    private ObservableCollectionEx<ExternalLink> _externalLinks = new ObservableCollectionEx<ExternalLink>();
-
-    public IReadOnlyList<ExternalLink> ExternalLinks => _externalLinks;
 
     public bool IsOnlineProject
     {
@@ -157,18 +148,6 @@ public class EditProjectModel : ModelBase
         set => SetProperty(ref _commissioning, value);
     }
 
-    public string Lon
-    {
-        get => _lon;
-        set => SetProperty(ref _lon, value);
-    }
-
-    public string Lat
-    {
-        get => _lat;
-        set => SetProperty(ref _lat, value);
-    }
-
     public void SetProject(Project project)
     {
         ProjectName = project.Name;
@@ -189,28 +168,14 @@ public class EditProjectModel : ModelBase
         ObjectNumber = project.ObjectNumber ?? string.Empty;
         ObjectCity = project.ObjectCity ?? string.Empty;
         ObjectZip = project.ObjectZip ?? string.Empty;
-        Lat = project.Lat ?? string.Empty;
-        Lon = project.Lon ?? string.Empty;
         _project = project;
     }
 
-    public EditProjectModel(ProjectRepository projectRepository, ExternalLinkRepository externalLinkRepository, ProjectService projectService, SyncingService syncingService)
+    public EditProjectModel(ProjectRepository projectRepository, ProjectService projectService, SyncingService syncingService)
     {
         _projectRepository = projectRepository;
-        _externalLinkRepository = externalLinkRepository;
         _projectService = projectService;
         _syncingService = syncingService;
-    }
-
-    public async Task AddExternalLink(string link)
-    {
-        var externalLink = new ExternalLink
-        {
-            Id = Guid.NewGuid(),
-            Link = link,
-            Type = ExternalLinkHelper.GetLinkType(link)
-        };
-        _externalLinks.Add(externalLink);
     }
 
     public async Task SaveProject()

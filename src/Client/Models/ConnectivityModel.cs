@@ -1,4 +1,4 @@
-﻿using Baustellen.App.Client.Helper;
+﻿ using Baustellen.App.Client.Helper;
 using Baustellen.App.Client.Services;
 
 namespace Baustellen.App.Client.Models;

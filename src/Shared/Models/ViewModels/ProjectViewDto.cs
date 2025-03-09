@@ -21,8 +21,6 @@ public class ProjectViewDto
     public string? ObjectNumber { get; set; }
     public string? ObjectZip { get; set; }
     public string? ObjectCity { get; set; }
-    public string? Lon { get; set; }
-    public string? Lat { get; set; }
     public DateTime ModifiedAt { get; set; }
     public IList<ExternalLinkViewDto> ExternalLinks { get; set; } = new List<ExternalLinkViewDto>();
 }
